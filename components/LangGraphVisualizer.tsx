@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-// Added CheckSquare to the list of imports from lucide-react to fix the reference error on line 47
 import { Shapes, Play, ArrowRight, Zap, Brain, CheckSquare } from 'lucide-react';
 
 const LangGraphVisualizer: React.FC = () => {
