@@ -114,9 +114,9 @@ const SecurityAuditHub: React.FC = () => {
            <div className="glass-panel p-6 rounded-xl border border-red-500/20 bg-slate-900/40">
               <h3 className="text-xs font-black text-red-900 uppercase tracking-widest mb-4">Integrity Notes</h3>
               <div className="space-y-4 font-mono text-[9px] text-red-900/80">
-                 <p>> [WARN] POST-QUANTUM ENTROPY: LOW</p>
-                 <p>> [INFO] SHADOW-SOCKETS: DETECTED</p>
-                 <p>> [CRIT] ZERO-DAY BUFFER OVERFLOW PROTECTION: INACTIVE</p>
+                 <p>&gt; [WARN] POST-QUANTUM ENTROPY: LOW</p>
+                 <p>&gt; [INFO] SHADOW-SOCKETS: DETECTED</p>
+                 <p>&gt; [CRIT] ZERO-DAY BUFFER OVERFLOW PROTECTION: INACTIVE</p>
               </div>
            </div>
 
