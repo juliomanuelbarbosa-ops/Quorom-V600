@@ -1,85 +1,61 @@
 import React, { useState, useMemo } from 'react';
-import { Search, ExternalLink, Zap, Info, Shield, Filter, Globe, Sparkles } from 'lucide-react';
+import { Search, ExternalLink, Zap, Info, Shield, Filter, Globe, Sparkles, Code, Image, Mic, MessageSquare, Briefcase, Atom } from 'lucide-react';
 import { AITool } from '../types';
 
 const AI_TOOLS: AITool[] = [
+  // DISCOVERY & DIRECTORIES
+  { name: "AIXploria", category: "Discovery", description: "The definitive encyclopedia of AI tools and GitHub projects.", link: "https://www.aixploria.com" },
+  { name: "FutureTools", category: "Discovery", description: "Curated collection of the latest AI tools by Matt Wolfe.", link: "https://www.futuretools.io" },
+
   // LLMs & CORE MODELS
   { name: "Gemini 3 Pro", category: "LLM", description: "Advanced reasoning and coding capabilities by Google.", link: "https://aistudio.google.com" },
   { name: "Claude 3.5 Sonnet", category: "LLM", description: "High-intelligence conversational AI by Anthropic.", link: "https://claude.ai" },
   { name: "GPT-4o", category: "LLM", description: "OpenAI flagship multimodal model.", link: "https://chatgpt.com" },
   { name: "Llama 3.1 405B", category: "LLM", description: "Meta's state-of-the-art open model.", link: "https://ai.meta.com" },
   { name: "Mistral Large 2", category: "LLM", description: "Europe's leading AI flagship.", link: "https://mistral.ai" },
-  { name: "Grok 4.20", category: "LLM", description: "xAI latest real-time search LLM with maximum edge.", link: "https://x.ai" },
-  { name: "Qwen 3.5", category: "LLM", description: "Alibaba's powerful multilingual open-source model.", link: "https://github.com/QwenLM/Qwen" },
   { name: "DeepSeek V3", category: "LLM", description: "Highly efficient MoE model from China.", link: "https://deepseek.com" },
-  { name: "GLM 5", category: "LLM", description: "Next-gen bilingual model by Zhipu AI.", link: "https://chatglm.cn" },
-  { name: "MiniMax M2.5", category: "LLM", description: "Optimized for long-context and creativity.", link: "https://minimaxi.com" },
   
-  // IMAGE & VISUAL
-  { name: "Photoshop AI", category: "Image", description: "Generative Fill and Expand within Adobe creative suite.", link: "https://adobe.com/photoshop" },
-  { name: "Leonardo AI", category: "Image", description: "Production-quality assets with incredible speed.", link: "https://leonardo.ai" },
-  { name: "Canva AI", category: "Image", description: "Magic Design and editing tools for everyone.", link: "https://canva.com" },
-  { name: "Microsoft Designer", category: "Image", description: "DALL-E 3 powered graphic design assistant.", link: "https://designer.microsoft.com" },
-  { name: "Midjourney v6.1", category: "Image", description: "Industry standard for artistic image generation.", link: "https://midjourney.com" },
-  { name: "Flux.1", category: "Image", description: "State-of-the-art prompt adherence and realism.", link: "https://blackforestlabs.ai" },
-  { name: "Stable Diffusion 3.5", category: "Image", description: "Stability AI's latest open-weight powerhouse.", link: "https://stability.ai" },
-  { name: "Freepik AI", category: "Image", description: "Instant image generation for designers.", link: "https://freepik.com" },
+  // DEVELOPER & CODING
+  { name: "Cursor", category: "Development", description: "AI-native code editor built for pair programming.", link: "https://cursor.com" },
+  { name: "Lovable", category: "Development", description: "Full-stack AI development platform for rapid apps.", link: "https://lovable.dev" },
+  { name: "Supermaven", category: "Development", description: "The fastest code completion tool for developers.", link: "https://supermaven.com" },
+  { name: "Replit Agent", category: "Development", description: "Build full applications from natural language.", link: "https://replit.com" },
+  { name: "V0.dev", category: "Development", description: "Generative UI for React and Tailwind components.", link: "https://v0.dev" },
+  { name: "Codeium", category: "Development", description: "Free AI coding assistant for every editor.", link: "https://codeium.com" },
+  
+  // IMAGE & VISUAL SYNTHESIS
+  { name: "Flux.1", category: "Visual", description: "The new standard for open-weight image generation.", link: "https://blackforestlabs.ai" },
+  { name: "Midjourney v6.1", category: "Visual", description: "Industry standard for artistic image generation.", link: "https://midjourney.com" },
+  { name: "Krea AI", category: "Visual", description: "Real-time AI creative tools for designers.", link: "https://krea.ai" },
+  { name: "Leonardo AI", category: "Visual", description: "Production-quality assets with incredible speed.", link: "https://leonardo.ai" },
+  { name: "Magnific AI", category: "Visual", description: "Extreme AI upscaling and enhancement.", link: "https://magnific.ai" },
+  { name: "Adobe Firefly", category: "Visual", description: "Ethical generative AI for commercial design.", link: "https://adobe.com/firefly" },
   
   // AUDIO & SPEECH
   { name: "ElevenLabs", category: "Audio", description: "Most realistic AI speech synthesis available.", link: "https://elevenlabs.io" },
-  { name: "Lyria 3", category: "Audio", description: "Google DeepMind's most advanced music model.", link: "https://deepmind.google/technologies/lyria" },
   { name: "Suno AI v4", category: "Audio", description: "Full song generation with lyrics and melody.", link: "https://suno.com" },
-  { name: "Udio", category: "Audio", description: "Cinematic music generation with insane fidelity.", link: "https://udio.com" },
-  { name: "Murf.AI", category: "Audio", description: "Versatile AI voice generator for creators.", link: "https://murf.ai" },
-  { name: "Uberduck", category: "Audio", description: "Community-driven AI voice and rap generator.", link: "https://uberduck.ai" },
-  { name: "Resemble.ai", category: "Audio", description: "Cloned voices that sound exactly like you.", link: "https://resemble.ai" },
-  { name: "Play HT", category: "Audio", description: "Instant text-to-speech with massive voice library.", link: "https://play.ht" },
+  { name: "Udio", category: "Audio", description: "Cinematic quality AI music generation.", link: "https://udio.com" },
+  { name: "Descript", category: "Audio", description: "AI-powered video and podcast editing.", link: "https://descript.com" },
+  { name: "Riverside.fm", category: "Audio", description: "AI-enhanced remote recording and transcription.", link: "https://riverside.fm" },
   
-  // VIDEO & ANIMATION
-  { name: "Runway Gen-3", category: "Video", description: "High-end cinematic video from text.", link: "https://runwayml.com" },
-  { name: "Luma Dream Machine", category: "Video", description: "Highly realistic, high-fidelity video generation.", link: "https://lumalabs.ai" },
-  { name: "Kling AI", category: "Video", description: "Breakthrough physics-aware video generation.", link: "https://klingai.com" },
-  { name: "Filmustage", category: "Video", description: "AI-powered script breakdown and scheduling.", link: "https://filmustage.com" },
-  { name: "Waymark", category: "Video", description: "AI video creator for local advertising.", link: "https://waymark.com" },
-  { name: "Live3D AI Face Swap", category: "Video", description: "Real-time face swapping for video calls.", link: "https://live3d.io" },
-  { name: "HeyGen", category: "Video", description: "AI avatar generator for professional video.", link: "https://heygen.com" },
-
-  // PRODUCTIVITY & SEARCH
-  { name: "Perplexity AI", category: "Search", description: "The definitive AI search engine for real-time answers.", link: "https://perplexity.ai" },
-  { name: "Notion AI", category: "Productivity", description: "AI-powered workspace and documentation.", link: "https://notion.ai" },
-  { name: "QuillBot", category: "Productivity", description: "Advanced paraphrasing and writing assistant.", link: "https://quillbot.com" },
-  { name: "Textero AI", category: "Productivity", description: "AI academic writing and research tool.", link: "https://textero.ai" },
-  { name: "Humata AI", category: "Productivity", description: "The fastest way to understand complex documents.", link: "https://humata.ai" },
-  { name: "SciSpace", category: "Productivity", description: "AI copilot for reading and understanding papers.", link: "https://typeset.io" },
-  { name: "ClickUp Brain", category: "Productivity", description: "AI integrated deeply into project management.", link: "https://clickup.com" },
-  { name: "Any Summary", category: "Productivity", description: "Summarize any file, video, or URL instantly.", link: "https://anysummary.app" },
-
-  // DEV TOOLS & CODING
-  { name: "Cursor", category: "Dev", description: "AI-native code editor with deep context.", link: "https://cursor.com" },
-  { name: "v0.dev", category: "Dev", description: "Vercel's UI generation for React/Tailwind.", link: "https://v0.dev" },
-  { name: "Replit Agent", category: "Dev", description: "Build full applications with simple prompts.", link: "https://replit.com" },
-  { name: "Codeium", category: "Dev", description: "Lightning-fast AI code completions.", link: "https://codeium.com" },
-  { name: "Gologin", category: "Dev", description: "Anti-detect browser for managing multi-profiles.", link: "https://gologin.com" },
-  { name: "Manus Browser Operator", category: "Dev", description: "AI that can browse the web like a human.", link: "https://manus.ai" },
-
-  // SECURITY & DETECTION
-  { name: "FaceCheck ID", category: "Security", description: "Facial recognition search across the web.", link: "https://facecheck.id" },
-  { name: "DeepFake Detector", category: "Security", description: "Verify authenticity of video and audio.", link: "https://deepfakedetector.ai" },
-  { name: "GPTZero", category: "Security", description: "The gold standard for AI content detection.", link: "https://gptzero.me" },
-  { name: "PimEyes", category: "Security", description: "Deep facial search engine.", link: "https://pimeyes.com" },
-  { name: "Copyleaks", category: "Security", description: "Plagiarism and AI detection for enterprise.", link: "https://copyleaks.com" },
-
-  // MARKETING & ADS
-  { name: "AdsTurbo AI", category: "Marketing", description: "Generate high-converting ad creatives.", link: "https://adsturbo.ai" },
-  { name: "Adcreative AI", category: "Marketing", description: "Scale ad generation with Semrush technology.", link: "https://adcreative.ai" },
-  { name: "Namelix", category: "Marketing", description: "AI business name generator.", link: "https://namelix.com" },
-  { name: "HoppyCopy", category: "Marketing", description: "AI email copy specifically for marketing.", link: "https://hoppycopy.co" },
+  // AGENTS & AUTOMATION
+  { name: "Zapier Central", category: "Agents", description: "Teach AI agents to work across 6000+ apps.", link: "https://zapier.com/central" },
+  { name: "Make.com", category: "Automation", description: "Visual platform to build complex AI workflows.", link: "https://make.com" },
+  { name: "MindStudio", category: "Agents", description: "No-code platform to build custom AI workers.", link: "https://mindstudio.ai" },
+  { name: "AgentGPT", category: "Agents", description: "Assemble, configure, and deploy autonomous AI agents.", link: "https://agentgpt.reworkd.ai" },
   
-  // SPECIALIZED TOOLS
-  { name: "Utopia Enhance", category: "Visual", description: "Upscale and enhance images to 8K resolution.", link: "https://utopia.ai" },
-  { name: "RedactAI", category: "Privacy", description: "Anonymize sensitive data in text and images.", link: "https://redactai.io" },
-  { name: "Dressrious", category: "Lifestyle", description: "AI fashion stylist and outfit planner.", link: "https://dressrious.com" },
-  { name: "Flo", category: "Health", description: "AI-driven health and cycle tracking.", link: "https://flo.health" }
+  // RESEARCH & DATA
+  { name: "Consensus", category: "Research", description: "AI search engine for peer-reviewed research.", link: "https://consensus.app" },
+  { name: "Elicit", category: "Research", description: "Automate time-consuming research tasks with AI.", link: "https://elicit.com" },
+  { name: "Perplexity AI", category: "Research", description: "The definitive AI search engine for real-time answers.", link: "https://perplexity.ai" },
+  { name: "NotebookLM", category: "Research", description: "AI-native research and writing assistant.", link: "https://notebooklm.google" },
+  { name: "ResearchRabbit", category: "Research", description: "Mapping research networks and discovery.", link: "https://researchrabbit.ai" },
+
+  // WRITING & MARKETING
+  { name: "Jasper", category: "Marketing", description: "Enterprise AI platform for content strategy.", link: "https://jasper.ai" },
+  { name: "Copy.ai", category: "Marketing", description: "GTM AI platform for marketing and sales.", link: "https://copy.ai" },
+  { name: "Writesonic", category: "Marketing", description: "AI-powered content marketing and SEO platform.", link: "https://writesonic.com" },
+  { name: "AdCreative.ai", category: "Marketing", description: "Generate conversion-focused ad creatives.", link: "https://adcreative.ai" }
 ];
 
 const AIToolsDirectory: React.FC = () => {
@@ -95,6 +71,18 @@ const AIToolsDirectory: React.FC = () => {
        t.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
        t.category.toLowerCase().includes(searchTerm.toLowerCase()))
     ), [searchTerm, filter]);
+
+  const getCategoryIcon = (cat: string) => {
+    switch (cat) {
+      case 'Development': return <Code size={14} />;
+      case 'Visual': return <Image size={14} />;
+      case 'Audio': return <Mic size={14} />;
+      case 'LLM': return <MessageSquare size={14} />;
+      case 'Marketing': return <Briefcase size={14} />;
+      case 'Research': return <Atom size={14} />;
+      default: return <Zap size={14} />;
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-20">
@@ -112,12 +100,13 @@ const AIToolsDirectory: React.FC = () => {
             <button 
               key={cat} 
               onClick={() => setFilter(cat)}
-              className={`px-3 py-1.5 rounded-sm text-[9px] font-black tracking-widest transition-all border ${
+              className={`px-3 py-1.5 rounded-sm text-[9px] font-black tracking-widest transition-all border flex items-center gap-2 ${
                 filter === cat 
                   ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.5)] scale-105' 
                   : 'bg-slate-900/50 text-cyan-800 border-cyan-500/10 hover:text-cyan-400 hover:border-cyan-500/30'
               }`}
             >
+              {getCategoryIcon(cat)}
               {cat.toUpperCase()}
             </button>
           ))}
@@ -141,67 +130,53 @@ const AIToolsDirectory: React.FC = () => {
         </div>
       </div>
 
-      {filteredTools.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {filteredTools.map((tool, idx) => (
-            <div 
-              key={idx} 
-              className="glass-panel p-6 rounded-2xl border border-cyan-500/10 hover:border-cyan-500/60 hover:bg-slate-900/60 transition-all group flex flex-col h-full relative overflow-hidden"
-            >
-              <div className="absolute -top-4 -right-4 p-8 opacity-[0.03] pointer-events-none group-hover:opacity-[0.08] transition-opacity">
-                <Globe size={80} className="text-cyan-500" />
-              </div>
-              
-              <div className="flex justify-between items-start mb-4">
-                <span className="bg-cyan-500/10 text-cyan-500 text-[8px] font-black px-2.5 py-1 rounded-full border border-cyan-500/20 tracking-widest uppercase">
-                  {tool.category}
-                </span>
-                <a 
-                  href={tool.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-cyan-900 hover:text-cyan-400 transition-all hover:scale-110"
-                  title="Visit Website"
-                >
-                  <ExternalLink size={18} />
-                </a>
-              </div>
-              
-              <h3 className="text-lg font-black text-slate-100 group-hover:text-cyan-400 transition-colors mb-3 uppercase tracking-tight flex items-center">
-                {tool.name}
-                {idx < 10 && <Zap size={12} className="ml-2 text-yellow-500 animate-pulse" />}
-              </h3>
-              
-              <p className="text-slate-400 text-[11px] leading-relaxed mb-8 font-medium opacity-80 flex-1 border-l border-cyan-500/10 pl-3">
-                {tool.description}
-              </p>
-              
-              <div className="mt-auto">
-                <a 
-                  href={tool.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="block text-center py-3 bg-slate-950/50 hover:bg-cyan-500 hover:text-slate-950 transition-all text-[10px] font-black tracking-[0.2em] rounded-xl border border-cyan-500/20 uppercase group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]"
-                >
-                  Launch Module
-                </a>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {filteredTools.map((tool, idx) => (
+          <div 
+            key={idx} 
+            className="glass-panel p-6 rounded-2xl border border-cyan-500/10 hover:border-cyan-500/60 hover:bg-slate-900/60 transition-all group flex flex-col h-full relative overflow-hidden"
+          >
+            <div className="absolute -top-4 -right-4 p-8 opacity-[0.03] pointer-events-none group-hover:opacity-[0.08] transition-opacity">
+              <Globe size={80} className="text-cyan-500" />
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-40 glass-panel rounded-3xl border border-cyan-500/10">
-           <Shield className="mx-auto text-cyan-900 mb-6" size={64} />
-           <h3 className="text-2xl font-black text-cyan-900 uppercase tracking-[0.3em]">Query mismatch</h3>
-           <p className="text-cyan-950 text-xs font-bold uppercase mt-2">The specified neural pattern was not found in the v600.0 registry.</p>
-           <button 
-             onClick={() => {setSearchTerm(''); setFilter('All');}}
-             className="mt-8 text-cyan-500 font-black text-[10px] tracking-widest uppercase hover:text-cyan-300 transition-colors"
-           >
-             Clear All Filters
-           </button>
-        </div>
-      )}
+            
+            <div className="flex justify-between items-start mb-4">
+              <span className="bg-cyan-500/10 text-cyan-500 text-[8px] font-black px-2.5 py-1 rounded-full border border-cyan-500/20 tracking-widest uppercase">
+                {tool.category}
+              </span>
+              <a 
+                href={tool.link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-cyan-900 hover:text-cyan-400 transition-all hover:scale-110"
+                title="Visit Website"
+              >
+                <ExternalLink size={18} />
+              </a>
+            </div>
+            
+            <h3 className="text-lg font-black text-slate-100 group-hover:text-cyan-400 transition-colors mb-3 uppercase tracking-tight flex items-center">
+              {tool.name}
+              {idx < 15 && <Zap size={12} className="ml-2 text-yellow-500 animate-pulse" />}
+            </h3>
+            
+            <p className="text-slate-400 text-[11px] leading-relaxed mb-8 font-medium opacity-80 flex-1 border-l border-cyan-500/10 pl-3">
+              {tool.description}
+            </p>
+            
+            <div className="mt-auto">
+              <a 
+                href={tool.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block text-center py-3 bg-slate-950/50 hover:bg-cyan-500 hover:text-slate-950 transition-all text-[10px] font-black tracking-[0.2em] rounded-xl border border-cyan-500/20 uppercase group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+              >
+                Launch Module
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
       
       <div className="p-8 bg-cyan-500/5 border border-cyan-500/10 rounded-3xl flex items-center justify-between">
          <div className="flex items-center space-x-6">
@@ -210,18 +185,7 @@ const AIToolsDirectory: React.FC = () => {
             </div>
             <div>
                <div className="text-xs text-cyan-400 font-black uppercase tracking-widest">Global Intelligence mesh</div>
-               <div className="text-[10px] text-cyan-800 font-bold uppercase tracking-widest mt-1">Version 600.0.0 Stable / Last Crawl: FEB 2026</div>
-            </div>
-         </div>
-         <div className="hidden lg:flex items-center space-x-8">
-            <div className="text-right">
-               <div className="text-[8px] text-cyan-900 font-black uppercase">Sync Health</div>
-               <div className="text-xs font-black text-green-500">OPTIMAL</div>
-            </div>
-            <div className="h-10 w-px bg-cyan-500/20" />
-            <div className="text-right">
-               <div className="text-[8px] text-cyan-900 font-black uppercase">Nodes Active</div>
-               <div className="text-xs font-black text-cyan-500">642/642</div>
+               <div className="text-[10px] text-cyan-800 font-bold uppercase tracking-widest mt-1">Sourced from Best-of-AI & AIXploria Manifests</div>
             </div>
          </div>
       </div>

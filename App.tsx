@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -5,7 +6,8 @@ import {
   Menu, X, Search, Zap, Users, FileText, Boxes, Layers, CreditCard, BarChart3,
   Map as MapIcon, BookOpen, Layout, Binary, Monitor, CheckSquare, Network, Rocket,
   ShieldCheck, TerminalSquare, Wrench, Shapes, Bot, Command, Globe2, Sparkles,
-  Link as LinkIcon, Lock
+  Link as LinkIcon, Lock, TrendingUp, Video, Heart, Github, Settings, Library,
+  Image as ImageIcon, FileCode, Gamepad2
 } from 'lucide-react';
 
 import GrokNexus from './components/GrokNexus';
@@ -36,11 +38,28 @@ import BuildYourOwnXHub from './components/BuildYourOwnXHub';
 import PythonAlgorithmsVisualizer from './components/PythonAlgorithmsVisualizer';
 import SecurityAuditHub from './components/SecurityAuditHub';
 import LangGraphVisualizer from './components/LangGraphVisualizer';
-
-// Additional promised functional hubs to reach 28
 import TransformersJsHub from './components/TransformersJsHub';
 import OllamaLocalRunner from './components/OllamaLocalRunner';
 import FreeCodeCampHub from './components/FreeCodeCampHub';
+import ForecastForge from './components/ForecastForge';
+import VeoVideoForge from './components/VeoVideoForge';
+import NotebookLMHub from './components/NotebookLMHub';
+import LovableForge from './components/LovableForge';
+import OSProjectRegistry from './components/OSProjectRegistry';
+import NeuralConfig from './components/NeuralConfig';
+import NeuralLibrary from './components/NeuralLibrary';
+import AutoGPTHub from './components/AutoGPTHub';
+import StableDiffusionForge from './components/StableDiffusionForge';
+import N8NHub from './components/N8NHub';
+import LangChainForge from './components/LangChainForge';
+import DifyOrchestrator from './components/DifyOrchestrator';
+import OpenWebUIHub from './components/OpenWebUIHub';
+import SupabaseSubstrate from './components/SupabaseSubstrate';
+import ComfyUIForge from './components/ComfyUIForge';
+import NetdataObserver from './components/NetdataObserver';
+import PromptRegistry from './components/PromptRegistry';
+import MCPRegistry from './components/MCPRegistry';
+import EmulatorArchive from './components/EmulatorArchive';
 
 import { NavSection } from './types';
 
@@ -48,6 +67,8 @@ const App: React.FC = () => {
   const [activeModule, setActiveModule] = useState<string>('home');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [bootSequence, setBootSequence] = useState(true);
+  const [isNeuralConfigOpen, setIsNeuralConfigOpen] = useState(false);
+  const [neuralTier, setNeuralTier] = useState<'flash' | 'pro'>('flash');
 
   useEffect(() => {
     const timer = setTimeout(() => setBootSequence(false), 2000);
@@ -60,13 +81,28 @@ const App: React.FC = () => {
       items: [
         { id: 'home', label: 'GROK NEXUS', icon: 'Globe' },
         { id: 'gemini-oracle', label: 'GEMINI ORACLE', icon: 'BrainCircuit' },
-        { id: 'api-dashboard', label: 'LIVE DATAFEED', icon: 'BarChart3' }
+        { id: 'api-dashboard', label: 'LIVE DATAFEED', icon: 'BarChart3' },
+        { id: 'supabase-substrate', label: 'SUPABASE BACKEND', icon: 'Database' },
+        { id: 'netdata-observer', label: 'NETDATA OBSERVER', icon: 'Activity' },
+        { id: 'emulator-archive', label: 'EMULATOR ARCHIVE', icon: 'Gamepad2' }
       ] 
     },
     { 
       title: "AI & COGNITION", 
       items: [
+        { id: 'open-webui', label: 'OPEN WEBUI', icon: 'Layout' },
+        { id: 'mcp-registry', label: 'MCP REGISTRY', icon: 'Network' },
+        { id: 'prompt-registry', label: 'PROMPT REGISTRY', icon: 'FileCode' },
+        { id: 'comfyui-forge', label: 'COMFYUI FORGE', icon: 'Shapes' },
+        { id: 'autogpt-hub', label: 'AUTOGPT NODE', icon: 'Bot' },
+        { id: 'dify-orchestrator', label: 'DIFY ORCHESTRATOR', icon: 'Command' },
+        { id: 'langchain-forge', label: 'LANGCHAIN FORGE', icon: 'LinkIcon' },
+        { id: 'diffusion-forge', label: 'DIFFUSION FORGE', icon: 'Image' },
+        { id: 'n8n-automator', label: 'N8N AUTOMATOR', icon: 'Network' },
         { id: 'multi-agent-hub', label: 'SWARM COGNITION', icon: 'Users' },
+        { id: 'notebook-lm', label: 'NOTEBOOK LM', icon: 'BookOpen' },
+        { id: 'forecast-forge', label: 'FORECAST FORGE', icon: 'TrendingUp' },
+        { id: 'veo-video-forge', label: 'VEO VIDEO FORGE', icon: 'Video' },
         { id: 'crew-agent-hub', label: 'CREW AI OPS', icon: 'Network' },
         { id: 'langgraph-visualizer', label: 'LANGGRAPH MESH', icon: 'Shapes' },
         { id: 'rag-chat', label: 'KNOWLEDGE RAG', icon: 'Database' },
@@ -79,6 +115,8 @@ const App: React.FC = () => {
     { 
       title: "DEVELOPER TOOLS", 
       items: [
+        { id: 'os-project-registry', label: 'OS PROJECT HUB', icon: 'Github' },
+        { id: 'lovable-forge', label: 'LOVABLE FORGE', icon: 'Heart' },
         { id: 'developer-roadmap', label: 'ROADMAP EXPLORER', icon: 'MapIcon' },
         { id: 'js-algorithms', label: 'JS ALGORITHMS', icon: 'Binary' },
         { id: 'python-algorithms', label: 'PYTHON ALGORITHMS', icon: 'TerminalSquare' },
@@ -107,7 +145,8 @@ const App: React.FC = () => {
     { 
       title: "RESOURCES", 
       items: [
-        { id: 'ai-tools-directory', label: 'AI TOOLS (150+)', icon: 'Search' },
+        { id: 'neural-library', label: 'NEURAL LIBRARY', icon: 'Library' },
+        { id: 'ai-tools-directory', label: 'AI HUB (250+)', icon: 'Search' },
         { id: 'security-audit', label: 'SEC OPS AUDIT', icon: 'ShieldAlert' }
       ] 
     }
@@ -123,6 +162,18 @@ const App: React.FC = () => {
       case 'github-api': return <GithubExplorer />;
       case 'gemini-oracle': return <GeminiOracle />;
       case 'multi-agent-hub': return <MultiAgentHub />;
+      case 'autogpt-hub': return <AutoGPTHub />;
+      case 'dify-orchestrator': return <DifyOrchestrator />;
+      case 'open-webui': return <OpenWebUIHub />;
+      case 'mcp-registry': return <MCPRegistry />;
+      case 'prompt-registry': return <PromptRegistry />;
+      case 'supabase-substrate': return <SupabaseSubstrate />;
+      case 'comfyui-forge': return <ComfyUIForge />;
+      case 'netdata-observer': return <NetdataObserver />;
+      case 'emulator-archive': return <EmulatorArchive />;
+      case 'langchain-forge': return <LangChainForge />;
+      case 'diffusion-forge': return <StableDiffusionForge />;
+      case 'n8n-automator': return <N8NHub />;
       case 'crew-agent-hub': return <CrewAgentHub />;
       case 'rag-chat': return <RAGChatHub />;
       case 'local-llm': return <LocalLLMRunner />;
@@ -146,7 +197,68 @@ const App: React.FC = () => {
       case 'transformers-js': return <TransformersJsHub />;
       case 'ollama-runner': return <OllamaLocalRunner />;
       case 'freecodecamp': return <FreeCodeCampHub />;
+      case 'forecast-forge': return <ForecastForge />;
+      case 'veo-video-forge': return <VeoVideoForge />;
+      case 'notebook-lm': return <NotebookLMHub />;
+      case 'lovable-forge': return <LovableForge />;
+      case 'os-project-registry': return <OSProjectRegistry />;
+      case 'neural-library': return <NeuralLibrary />;
       default: return <GrokNexus onNavigate={setActiveModule} />;
+    }
+  };
+
+  const getSidebarIcon = (id: string) => {
+    switch (id) {
+      case 'home': return <Globe size={14} />;
+      case 'gemini-oracle': return <BrainCircuit size={14} />;
+      case 'api-dashboard': return <BarChart3 size={14} />;
+      case 'supabase-substrate': return <Database size={14} />;
+      case 'netdata-observer': return <Activity size={14} />;
+      case 'emulator-archive': return <Gamepad2 size={14} />;
+      case 'multi-agent-hub': return <Users size={14} />;
+      case 'autogpt-hub': return <Bot size={14} />;
+      case 'dify-orchestrator': return <Command size={14} />;
+      case 'open-webui': return <Layout size={14} />;
+      case 'mcp-registry': return <Network size={14} />;
+      case 'prompt-registry': return <FileCode size={14} />;
+      case 'comfyui-forge': return <Shapes size={14} />;
+      case 'langchain-forge': return <LinkIcon size={14} />;
+      case 'diffusion-forge': return <ImageIcon size={14} />;
+      case 'n8n-automator': return <Network size={14} />;
+      case 'forecast-forge': return <TrendingUp size={14} />;
+      case 'veo-video-forge': return <Video size={14} />;
+      case 'notebook-lm': return <BookOpen size={14} />;
+      case 'crew-agent-hub': return <Network size={14} />;
+      case 'langgraph-visualizer': return <Shapes size={14} />;
+      case 'rag-chat': return <FileText size={14} />;
+      case 'tensorflow-playground': return <Cpu size={14} />;
+      case 'transformers-js': return <Zap size={14} />;
+      case 'ollama-runner': return <Terminal size={14} />;
+      case 'local-llm': return <Boxes size={14} />;
+      case 'lovable-forge': return <Heart size={14} />;
+      case 'os-project-registry': return <Github size={14} />;
+      case 'developer-roadmap': return <MapIcon size={14} />;
+      case 'js-algorithms': return <Binary size={14} />;
+      case 'python-algorithms': return <TerminalSquare size={14} />;
+      case 'react-playground': return <Monitor size={14} />;
+      case 'vue-playground': return <Monitor size={14} />;
+      case 'system-design': return <Layers size={14} />;
+      case 'awesome-lists': return <BookOpen size={14} />;
+      case 'public-apis': return <Globe2 size={14} />;
+      case 'coding-interview': return <CheckSquare size={14} />;
+      case 'github-api': return <Code size={14} />;
+      case 'build-your-own-x': return <Wrench size={14} />;
+      case 'airbnb-style': return <ShieldCheck size={14} />;
+      case 'oh-my-zsh': return <Terminal size={14} />;
+      case 'freecodecamp': return <Code size={14} />;
+      case 'wallet-connector': return <Wallet size={14} />;
+      case 'token-creator': return <Zap size={14} />;
+      case 'nft-creator': return <Layers size={14} />;
+      case 'stripe-payments': return <CreditCard size={14} />;
+      case 'ai-tools-directory': return <Search size={14} />;
+      case 'neural-library': return <Library size={14} />;
+      case 'security-audit': return <ShieldAlert size={14} />;
+      default: return <Activity size={14} />;
     }
   };
 
@@ -191,37 +303,7 @@ const App: React.FC = () => {
                         activeModule === item.id ? 'bg-cyan-500/10 border-l-2 border-cyan-500 text-cyan-400' : 'hover:bg-slate-800/50 text-slate-400'
                       }`}>
                       <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                        {item.id === 'home' ? <Globe size={14} /> : 
-                         item.id === 'gemini-oracle' ? <BrainCircuit size={14} /> :
-                         item.id === 'api-dashboard' ? <BarChart3 size={14} /> :
-                         item.id === 'multi-agent-hub' ? <Users size={14} /> :
-                         item.id === 'crew-agent-hub' ? <Network size={14} /> :
-                         item.id === 'langgraph-visualizer' ? <Shapes size={14} /> :
-                         item.id === 'rag-chat' ? <FileText size={14} /> :
-                         item.id === 'tensorflow-playground' ? <Cpu size={14} /> :
-                         item.id === 'transformers-js' ? <Zap size={14} /> :
-                         item.id === 'ollama-runner' ? <Terminal size={14} /> :
-                         item.id === 'local-llm' ? <Boxes size={14} /> :
-                         item.id === 'developer-roadmap' ? <MapIcon size={14} /> :
-                         item.id === 'js-algorithms' ? <Binary size={14} /> :
-                         item.id === 'python-algorithms' ? <TerminalSquare size={14} /> :
-                         item.id === 'react-playground' ? <Monitor size={14} /> :
-                         item.id === 'vue-playground' ? <Monitor size={14} /> :
-                         item.id === 'system-design' ? <Layers size={14} /> :
-                         item.id === 'awesome-lists' ? <BookOpen size={14} /> :
-                         item.id === 'public-apis' ? <Globe2 size={14} /> :
-                         item.id === 'coding-interview' ? <CheckSquare size={14} /> :
-                         item.id === 'github-api' ? <Code size={14} /> :
-                         item.id === 'build-your-own-x' ? <Wrench size={14} /> :
-                         item.id === 'airbnb-style' ? <ShieldCheck size={14} /> :
-                         item.id === 'oh-my-zsh' ? <Terminal size={14} /> :
-                         item.id === 'freecodecamp' ? <Code size={14} /> :
-                         item.id === 'wallet-connector' ? <Wallet size={14} /> :
-                         item.id === 'token-creator' ? <Zap size={14} /> :
-                         item.id === 'nft-creator' ? <Layers size={14} /> :
-                         item.id === 'stripe-payments' ? <CreditCard size={14} /> :
-                         item.id === 'ai-tools-directory' ? <Search size={14} /> :
-                         <Activity size={14} />}
+                        {getSidebarIcon(item.id)}
                       </span>
                       <span className="text-[10px] font-bold tracking-wider uppercase">{item.label}</span>
                     </button>
@@ -256,11 +338,17 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex items-center space-x-6">
-             <div className="hidden lg:flex items-center space-x-4">
+             <div className="flex items-center gap-4 bg-slate-900/50 px-3 py-1 rounded border border-cyan-500/10">
                 <div className="flex flex-col items-end">
-                   <div className="text-[8px] text-cyan-900 font-bold uppercase">Mesh Load</div>
-                   <div className="text-[10px] text-cyan-600 font-mono">12.4%</div>
+                   <div className="text-[7px] text-cyan-900 font-black uppercase">Neural Tier</div>
+                   <div className={`text-[10px] font-mono ${neuralTier === 'pro' ? 'text-purple-400' : 'text-cyan-400'}`}>{neuralTier.toUpperCase()}</div>
                 </div>
+                <button 
+                  onClick={() => setIsNeuralConfigOpen(true)}
+                  className="p-1.5 hover:bg-slate-800 rounded text-cyan-600 hover:text-cyan-400 transition-all"
+                >
+                  <Settings size={14} />
+                </button>
              </div>
              <button className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-3 py-1 rounded-sm text-[9px] font-black tracking-widest transition-all border border-red-500/20">
                 DISCONNECT
@@ -278,6 +366,16 @@ const App: React.FC = () => {
 
         <MusicWiz />
       </main>
+
+      <AnimatePresence>
+        {isNeuralConfigOpen && (
+          <NeuralConfig 
+            currentTier={neuralTier} 
+            setTier={setNeuralTier} 
+            onClose={() => setIsNeuralConfigOpen(false)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
