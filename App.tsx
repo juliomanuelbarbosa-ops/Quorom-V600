@@ -7,7 +7,7 @@ import {
   Map as MapIcon, BookOpen, Layout, Binary, Monitor, CheckSquare, Network, Rocket,
   ShieldCheck, TerminalSquare, Wrench, Shapes, Bot, Command, Globe2, Sparkles,
   Link as LinkIcon, Lock, TrendingUp, Video, Heart, Github, Settings, Library,
-  Image as ImageIcon, FileCode, Gamepad2
+  Image as ImageIcon, FileCode, Gamepad2, Gamepad
 } from 'lucide-react';
 
 import GrokNexus from './components/GrokNexus';
@@ -60,6 +60,7 @@ import NetdataObserver from './components/NetdataObserver';
 import PromptRegistry from './components/PromptRegistry';
 import MCPRegistry from './components/MCPRegistry';
 import EmulatorArchive from './components/EmulatorArchive';
+import MamePreservationCore from './components/MamePreservationCore';
 
 import { NavSection } from './types';
 
@@ -84,6 +85,7 @@ const App: React.FC = () => {
         { id: 'api-dashboard', label: 'LIVE DATAFEED', icon: 'BarChart3' },
         { id: 'supabase-substrate', label: 'SUPABASE BACKEND', icon: 'Database' },
         { id: 'netdata-observer', label: 'NETDATA OBSERVER', icon: 'Activity' },
+        { id: 'mame-preservation', label: 'MAME PRESERVATION', icon: 'Gamepad' },
         { id: 'emulator-archive', label: 'EMULATOR ARCHIVE', icon: 'Gamepad2' }
       ] 
     },
@@ -170,6 +172,7 @@ const App: React.FC = () => {
       case 'supabase-substrate': return <SupabaseSubstrate />;
       case 'comfyui-forge': return <ComfyUIForge />;
       case 'netdata-observer': return <NetdataObserver />;
+      case 'mame-preservation': return <MamePreservationCore />;
       case 'emulator-archive': return <EmulatorArchive />;
       case 'langchain-forge': return <LangChainForge />;
       case 'diffusion-forge': return <StableDiffusionForge />;
@@ -214,6 +217,7 @@ const App: React.FC = () => {
       case 'api-dashboard': return <BarChart3 size={14} />;
       case 'supabase-substrate': return <Database size={14} />;
       case 'netdata-observer': return <Activity size={14} />;
+      case 'mame-preservation': return <Gamepad size={14} />;
       case 'emulator-archive': return <Gamepad2 size={14} />;
       case 'multi-agent-hub': return <Users size={14} />;
       case 'autogpt-hub': return <Bot size={14} />;
