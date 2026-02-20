@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Network, GitMerge, Zap, Cpu } from 'lucide-react';
 
+import useQuorumStore from './useQuorumStore';
+
 interface BabelProtocolProps {
   onTaskComplete?: (brief: any) => void;
 }
@@ -11,6 +13,7 @@ interface AgentLog {
 }
 
 const BabelProtocol: React.FC<BabelProtocolProps> = ({ onTaskComplete }) => {
+  const addIntelBrief = useQuorumStore((state) => state.addIntelBrief);
   const [activeTask, setActiveTask] = useState('Standby');
   const [agentLogs, setAgentLogs] = useState<AgentLog[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -44,8 +47,8 @@ const BabelProtocol: React.FC<BabelProtocolProps> = ({ onTaskComplete }) => {
         setAgentLogs(prev => [...prev, mockSequence[i]]);
         
         // On the final step, push the data up to the parent App.js
-        if (i === mockSequence.length - 1 && onTaskComplete) {
-          onTaskComplete({
+        if (i === mockSequence.length - 1) {
+          addIntelBrief({
             id: `intel-${Math.random().toString(36).substr(2, 9)}`,
             timestamp: new Date().toLocaleTimeString(),
             type: 'ARBITRAGE EDGE',
@@ -61,7 +64,7 @@ const BabelProtocol: React.FC<BabelProtocolProps> = ({ onTaskComplete }) => {
 
     // Trigger simulation once for demonstration
     runSwarmSimulation();
-  }, [onTaskComplete]);
+  }, [addIntelBrief]);
 
   return (
     <div className="bg-slate-950 p-6 rounded-xl border border-slate-800 flex flex-col h-full">

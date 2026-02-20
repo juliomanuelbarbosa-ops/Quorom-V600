@@ -11,6 +11,15 @@ import {
 
 type GenerationMode = 'text-to-video' | 'image-to-video';
 
+declare global {
+  interface Window {
+    aistudio: {
+      hasSelectedApiKey: () => Promise<boolean>;
+      openSelectKey: () => Promise<void>;
+    };
+  }
+}
+
 const VeoVideoForge: React.FC = () => {
   const [mode, setMode] = useState<GenerationMode>('text-to-video');
   const [prompt, setPrompt] = useState('');

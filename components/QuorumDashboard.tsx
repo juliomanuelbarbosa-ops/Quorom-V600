@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import BabelProtocol from './BabelProtocol';
-import IntelFeed, { IntelBrief } from './IntelFeed';
+import IntelFeed from './IntelFeed';
+import { IntelBrief } from './useQuorumStore';
 import MarketOracle from './MarketOracle';
 import ChainSight from './ChainSight';
 import AssetTokenize from './AssetTokenize';

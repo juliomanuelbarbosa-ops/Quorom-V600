@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { Radio as RadioReceiver, AlertTriangle, TerminalSquare, Filter } from 'lucide-react';
 
-export interface IntelBrief {
-  id: string;
-  timestamp: string;
-  type: string;
-  content: string;
-  severity: 'high' | 'medium' | 'low';
-}
+import useQuorumStore, { IntelBrief } from './useQuorumStore';
 
 interface IntelFeedProps {
-  briefs: IntelBrief[];
+  briefs?: IntelBrief[];
 }
 
-const IntelFeed: React.FC<IntelFeedProps> = ({ briefs }) => {
+const IntelFeed: React.FC<IntelFeedProps> = ({ briefs: propBriefs }) => {
+  const storeBriefs = useQuorumStore((state) => state.intelBriefs);
+  const briefs = propBriefs || storeBriefs;
+  
   // State to track the currently selected category
   const [activeFilter, setActiveFilter] = useState('ALL');
 

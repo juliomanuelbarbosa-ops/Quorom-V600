@@ -36,7 +36,7 @@ const VisualCortex = () => {
   }, []);
 
   // Custom Tooltip to replace the default white background with our slate theme
-  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-slate-900 border border-slate-700 p-3 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.8)] font-mono z-50">

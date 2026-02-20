@@ -1,13 +1,14 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI, ThinkingLevel } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel, Type, FunctionDeclaration } from "@google/genai";
 import { 
   Send, Bot, User, Loader2, Info, 
   Sparkles, Zap, Globe, MapPin, BrainCircuit,
-  Settings, ChevronDown
+  Settings, ChevronDown, Terminal
 } from 'lucide-react';
+import useQuorumStore from './useQuorumStore';
 
-type ChatMode = 'pro' | 'thinking' | 'lite' | 'search' | 'maps';
+type ChatMode = 'pro' | 'thinking' | 'lite' | 'search' | 'maps' | 'operator';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -16,6 +17,14 @@ interface Message {
 }
 
 const GeminiOracle: React.FC = () => {
+  const { 
+    addIntelBrief, 
+    unlockAchievement, 
+    setActiveView, 
+    missionLogs, 
+    intelBriefs 
+  } = useQuorumStore();
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +37,57 @@ const GeminiOracle: React.FC = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const operatorTools: FunctionDeclaration[] = [
+    {
+      name: "add_intel_brief",
+      parameters: {
+        type: Type.OBJECT,
+        description: "Add a new intelligence brief to the global Quorum feed.",
+        properties: {
+          type: { type: Type.STRING, description: "The category of intel (e.g., 'SECURITY', 'MARKET', 'WHALE_ALERT')" },
+          content: { type: Type.STRING, description: "The actual intelligence data or message." },
+          severity: { type: Type.STRING, enum: ['high', 'medium', 'low', 'info'], description: "Importance level." }
+        },
+        required: ["type", "content", "severity"]
+      }
+    },
+    {
+      name: "unlock_achievement",
+      parameters: {
+        type: Type.OBJECT,
+        description: "Grant the operator an achievement and XP.",
+        properties: {
+          text: { type: Type.STRING, description: "Description of the achievement." },
+          xp: { type: Type.NUMBER, description: "Amount of XP to grant." }
+        },
+        required: ["text", "xp"]
+      }
+    },
+    {
+      name: "navigate_to_module",
+      parameters: {
+        type: Type.OBJECT,
+        description: "Switch the active Quorum module view.",
+        properties: {
+          moduleId: { 
+            type: Type.STRING, 
+            enum: ['dashboard', 'home', 'gemini-oracle', 'gemini-vision', 'gemini-audio', 'multi-agent-swarm', 'babel-protocol', 'chain-sight', 'signal-nexus', 'api-dashboard', 'supabase-substrate', 'netdata-observer', 'emulator-archive', 'mame-core'],
+            description: "The ID of the module to navigate to." 
+          }
+        },
+        required: ["moduleId"]
+      }
+    },
+    {
+      name: "get_system_status",
+      parameters: {
+        type: Type.OBJECT,
+        description: "Retrieve current system status including mission logs and latest intel.",
+        properties: {}
+      }
+    }
+  ];
 
   const getModelConfig = (mode: ChatMode) => {
     switch (mode) {
@@ -57,6 +117,13 @@ const GeminiOracle: React.FC = () => {
             tools: [{ googleMaps: {} }]
           }
         };
+      case 'operator':
+        return {
+          model: 'gemini-3.1-pro-preview',
+          config: {
+            tools: [{ functionDeclarations: operatorTools }]
+          }
+        };
       case 'pro':
       default:
         return {
@@ -78,10 +145,11 @@ const GeminiOracle: React.FC = () => {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const { model, config } = getModelConfig(mode);
       
-      // Add system instruction for persona
       const finalConfig = {
         ...config,
-        systemInstruction: "You are the central oracle of THE QUORUM v600.0. Speak in a concise, technical, cyberpunk tone. If using tools, integrate the results naturally.",
+        systemInstruction: mode === 'operator' 
+          ? "You are the NEURAL OPERATOR of THE QUORUM. You have direct access to system modules. Use your tools to assist the user in managing the OS. Speak in a sharp, authoritative, technical cyberpunk tone."
+          : "You are the central oracle of THE QUORUM v600.0. Speak in a concise, technical, cyberpunk tone. If using tools, integrate the results naturally.",
       };
 
       const response = await ai.models.generateContent({
@@ -90,7 +158,33 @@ const GeminiOracle: React.FC = () => {
         config: finalConfig
       });
 
-      const text = response.text || "PROTOCOL_ERROR: Signal lost in the mesh.";
+      // Handle function calls if in operator mode
+      if (mode === 'operator' && response.functionCalls) {
+        for (const call of response.functionCalls) {
+          if (call.name === 'add_intel_brief') {
+            const args = call.args as any;
+            addIntelBrief({
+              id: `ai-${Date.now()}`,
+              timestamp: new Date().toLocaleTimeString('en-US', { hour12: false }),
+              type: args.type,
+              content: args.content,
+              severity: args.severity
+            });
+          } else if (call.name === 'unlock_achievement') {
+            const args = call.args as any;
+            unlockAchievement(args.text, args.xp);
+          } else if (call.name === 'navigate_to_module') {
+            const args = call.args as any;
+            setActiveView(args.moduleId);
+          } else if (call.name === 'get_system_status') {
+            // We can't easily send feedback back to the model in this simple UI loop without a chat session,
+            // but we can at least acknowledge it or show it in the response.
+            console.log("System status requested by AI");
+          }
+        }
+      }
+
+      const text = response.text || (response.functionCalls ? "EXECUTING_SYSTEM_COMMANDS..." : "PROTOCOL_ERROR: Signal lost in the mesh.");
       const grounding = response.candidates?.[0]?.groundingMetadata;
 
       setMessages(prev => [...prev, { 
@@ -109,6 +203,7 @@ const GeminiOracle: React.FC = () => {
 
   const modes = [
     { id: 'pro', label: 'Gemini Pro 3.1', icon: <Sparkles size={14} />, desc: 'Standard Reasoning' },
+    { id: 'operator', label: 'Neural Operator', icon: <Terminal size={14} />, desc: 'System Control Mode' },
     { id: 'thinking', label: 'Deep Thinker', icon: <BrainCircuit size={14} />, desc: 'High Reasoning Mode' },
     { id: 'lite', label: 'Flash Lite', icon: <Zap size={14} />, desc: 'Low Latency' },
     { id: 'search', label: 'Web Search', icon: <Globe size={14} />, desc: 'Google Search Grounding' },

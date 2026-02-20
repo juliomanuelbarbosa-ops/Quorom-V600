@@ -20,11 +20,14 @@ interface Transaction {
   timestamp: string;
 }
 
+import useQuorumStore from './useQuorumStore';
+
 interface ChainSightProps {
   onWhaleAlert?: (alert: any) => void;
 }
 
 const ChainSight: React.FC<ChainSightProps> = ({ onWhaleAlert }) => {
+  const { addIntelBrief, unlockAchievement } = useQuorumStore();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [latestBlock, setLatestBlock] = useState(21045832);
   const [isSyncing, setIsSyncing] = useState(true);
@@ -66,14 +69,17 @@ const ChainSight: React.FC<ChainSightProps> = ({ onWhaleAlert }) => {
         const tx = generateMockTx();
         
         // Trigger IntelFeed if it's a massive transaction
-        if (tx.isWhale && onWhaleAlert) {
-          onWhaleAlert({
+        if (tx.isWhale) {
+          addIntelBrief({
             id: `whale-${tx.hash}`,
             timestamp: tx.timestamp,
             type: 'ON-CHAIN WHALE',
             content: `Massive liquidity movement: ${tx.amount} ${tx.asset} routed to ${tx.to}. Potential market impact.`,
             severity: 'high' // This will make it pulse red in IntelFeed
           });
+
+          // Grant XP for detecting a whale
+          unlockAchievement(`Whale Detected: ${tx.amount} ${tx.asset}`, 50);
         }
         
         return tx;
@@ -86,7 +92,7 @@ const ChainSight: React.FC<ChainSightProps> = ({ onWhaleAlert }) => {
     }, 4500);
 
     return () => clearInterval(interval);
-  }, [onWhaleAlert]);
+  }, [addIntelBrief, unlockAchievement]);
 
   return (
     <div className="bg-slate-950 p-6 rounded-xl border border-slate-800 text-slate-200 h-full flex flex-col font-mono">

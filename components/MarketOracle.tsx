@@ -63,7 +63,7 @@ const MarketOracle = () => {
   }, [activeMarket]);
 
   // Custom Tooltip to match the cyberpunk UI
-  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.5)] font-mono z-50">

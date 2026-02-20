@@ -7,9 +7,12 @@ import {
   Map as MapIcon, BookOpen, Layout, Binary, Monitor, CheckSquare, Network, Rocket,
   ShieldCheck, TerminalSquare, Wrench, Shapes, Bot, Command, Globe2, Sparkles,
   Link as LinkIcon, Lock, TrendingUp, Video, Heart, Github, Settings, Library,
-  Image as ImageIcon, FileCode, Gamepad2, Gamepad, Trophy, Wand2, Crosshair, Eye, Headphones
+  Image as ImageIcon, FileCode, Gamepad2, Gamepad, Trophy, Wand2, Crosshair, Eye, Headphones,
+  LayoutDashboard, RadioReceiver, DatabaseZap, LogOut, GitMerge
 } from 'lucide-react';
 
+import useQuorumStore from './components/useQuorumStore';
+import HomeDashboard from './components/HomeDashboard';
 import GrokNexus from './components/GrokNexus';
 import TensorFlowPlayground from './components/TensorFlowPlayground';
 import AIToolsDirectory from './components/AIToolsDirectory';
@@ -70,10 +73,16 @@ import GeminiVisionStudio from './components/GeminiVisionStudio';
 import GeminiAudioLab from './components/GeminiAudioLab';
 import FootballBettingHub from './components/FootballBettingHub';
 import SportsOracle from './components/SportsOracle';
+import SignalNexus from './components/SignalNexus';
+import GeoVigilanceHub from './components/GeoVigilanceHub';
+import CommandPalette from './components/CommandPalette';
+import OperatorPresence from './components/OperatorPresence';
 import { NavSection } from './types';
 
+import useQuorumPersistence from './components/useQuorumPersistence';
+
 const App: React.FC = () => {
-  const [activeModule, setActiveModule] = useState<string>('home');
+  const { activeView: activeModule, setActiveView: setActiveModule, saveGameProgress } = useQuorumStore();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [bootSequence, setBootSequence] = useState(true);
   const [isNeuralConfigOpen, setIsNeuralConfigOpen] = useState(false);
@@ -88,6 +97,7 @@ const App: React.FC = () => {
     { 
       title: "CORE SYSTEMS", 
       items: [
+        { id: 'dashboard', label: 'COMMAND CENTER', icon: 'LayoutDashboard' },
         { id: 'home', label: 'GROK NEXUS', icon: 'Globe' },
         { id: 'gemini-oracle', label: 'GEMINI OMNI-ORACLE', icon: 'BrainCircuit' },
         { id: 'gemini-vision', label: 'GEMINI VISION', icon: 'Eye' },
@@ -95,6 +105,8 @@ const App: React.FC = () => {
         { id: 'multi-agent-swarm', label: 'SWARM INTELLIGENCE', icon: 'Network' },
         { id: 'babel-protocol', label: 'BABEL PROTOCOL', icon: 'GitMerge' },
         { id: 'chain-sight', label: 'CHAINSIGHT', icon: 'Eye' },
+        { id: 'signal-nexus', label: 'SIGNAL NEXUS', icon: 'RadioReceiver' },
+        { id: 'geo-vigilance', label: 'GEO VIGILANCE', icon: 'Globe' },
         { id: 'api-dashboard', label: 'LIVE DATAFEED', icon: 'BarChart3' },
         { id: 'supabase-substrate', label: 'SUPABASE BACKEND', icon: 'Database' },
         { id: 'netdata-observer', label: 'NETDATA OBSERVER', icon: 'Activity' },
@@ -171,6 +183,7 @@ const App: React.FC = () => {
 
   const renderContent = () => {
     switch (activeModule) {
+      case 'dashboard': return <HomeDashboard />;
       case 'home': return <GrokNexus onNavigate={setActiveModule} />;
       case 'tensorflow-playground': return <TensorFlowPlayground />;
       case 'ai-tools-directory': return <AIToolsDirectory />;
@@ -183,6 +196,8 @@ const App: React.FC = () => {
       case 'multi-agent-swarm': return <MultiAgentSwarm />;
       case 'babel-protocol': return <QuorumDashboard />;
       case 'chain-sight': return <ChainSight />;
+      case 'signal-nexus': return <SignalNexus />;
+      case 'geo-vigilance': return <GeoVigilanceHub />;
       case 'multi-agent-hub': return <MultiAgentHub />;
       case 'autogpt-hub': return <AutoGPTHub />;
       case 'dify-orchestrator': return <DifyOrchestrator />;
@@ -228,12 +243,13 @@ const App: React.FC = () => {
       case 'lovable-forge': return <LovableForge />;
       case 'os-project-registry': return <OSProjectRegistry />;
       case 'neural-library': return <NeuralLibrary />;
-      default: return <GrokNexus onNavigate={setActiveModule} />;
+      default: return <HomeDashboard />;
     }
   };
 
   const getSidebarIcon = (id: string) => {
     switch (id) {
+      case 'dashboard': return <LayoutDashboard size={14} />;
       case 'home': return <Globe size={14} />;
       case 'gemini-oracle': return <BrainCircuit size={14} />;
       case 'gemini-vision': return <Eye size={14} />;
@@ -241,6 +257,8 @@ const App: React.FC = () => {
       case 'multi-agent-swarm': return <Network size={14} />;
       case 'babel-protocol': return <GitMerge size={14} />;
       case 'chain-sight': return <Eye size={14} />;
+      case 'signal-nexus': return <RadioReceiver size={14} />;
+      case 'geo-vigilance': return <Globe size={14} />;
       case 'api-dashboard': return <BarChart3 size={14} />;
       case 'supabase-substrate': return <Database size={14} />;
       case 'netdata-observer': return <Activity size={14} />;
@@ -354,6 +372,7 @@ const App: React.FC = () => {
           </div>
           <div className="text-[8px] text-cyan-900 font-bold uppercase tracking-tighter opacity-50">OS_KERNEL: 600.0.0_STABLE</div>
         </div>
+        <OperatorPresence />
       </motion.aside>
 
       <main className="flex-1 flex flex-col min-w-0 relative">
@@ -409,6 +428,7 @@ const App: React.FC = () => {
           />
         )}
       </AnimatePresence>
+      <CommandPalette />
     </div>
   );
 };

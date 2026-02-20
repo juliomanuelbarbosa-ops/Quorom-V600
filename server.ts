@@ -3,10 +3,7 @@ import cors from "cors";
 import { createServer as createViteServer } from "vite";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage, AIMessage, BaseMessage } from "@langchain/core/messages";
-import { StateGraph, END } from "@langchain/langgraph";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { StateGraph, START, END } from "@langchain/langgraph";
 
 // Define the Shared State
 interface AgentState {
@@ -27,7 +24,7 @@ async function startServer() {
 
   // --- LangGraph Agent Setup ---
   const model = new ChatGoogleGenerativeAI({
-    modelName: "gemini-3-flash-preview",
+    model: "gemini-3-flash-preview",
     apiKey: process.env.GEMINI_API_KEY,
   });
 
@@ -98,21 +95,18 @@ async function startServer() {
         default: () => [],
       }
     }
-  });
-
-  workflow.addNode("grok", grokNode);
-  workflow.addNode("gemini", geminiNode);
-  workflow.addNode("deepseek", deepseekNode);
-  workflow.addNode("claude", claudeNode);
-  workflow.addNode("gpt", gptNode);
-
-  workflow.addEdge("grok", "gemini");
-  workflow.addEdge("gemini", "deepseek");
-  workflow.addEdge("deepseek", "claude");
-  workflow.addEdge("claude", "gpt");
-  workflow.addEdge("gpt", END);
-
-  workflow.setEntryPoint("grok");
+  })
+  .addNode("grok", grokNode)
+  .addNode("gemini", geminiNode)
+  .addNode("deepseek", deepseekNode)
+  .addNode("claude", claudeNode)
+  .addNode("gpt", gptNode)
+  .addEdge(START, "grok")
+  .addEdge("grok", "gemini")
+  .addEdge("gemini", "deepseek")
+  .addEdge("deepseek", "claude")
+  .addEdge("claude", "gpt")
+  .addEdge("gpt", END);
 
   const appSwarm = workflow.compile();
 

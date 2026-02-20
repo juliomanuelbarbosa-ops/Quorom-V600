@@ -6,7 +6,7 @@ import {
   Gamepad, Cpu, Database, Save, Activity, 
   Box, Search, ExternalLink, Star, Zap, 
   Terminal, Monitor, HardDrive, ShieldCheck,
-  ChevronRight, RefreshCcw, Loader2, Info
+  ChevronRight, RefreshCcw, Loader2, Info, Trophy
 } from 'lucide-react';
 
 interface MachineDriver {
@@ -28,12 +28,19 @@ const DRIVERS: MachineDriver[] = [
   { id: 'segas16', name: "SEGA SYSTEM 16", year: "1985", manufacturer: "Sega", cpu: "68000 @ 10 MHz", sound: "YM2151", resolution: "320x224", status: 'PRESERVING' }
 ];
 
+import useQuorumStore from './useQuorumStore';
+
 const MamePreservationCore: React.FC = () => {
+  const unlockAchievement = useQuorumStore(state => state.unlockAchievement);
   const [selectedDriver, setSelectedDriver] = useState<MachineDriver>(DRIVERS[0]);
   const [isBooting, setIsBooting] = useState(false);
   const [bootLog, setBootLog] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [neuralInsights, setNeuralInsights] = useState<string | null>(null);
+
+  const handleUnlock = () => {
+    unlockAchievement(`Binary Legend: Beat ${selectedDriver.name} on MAME Core`, 1000);
+  };
 
   const initiateBoot = () => {
     setIsBooting(true);
@@ -192,7 +199,7 @@ const MamePreservationCore: React.FC = () => {
                     </div>
                  </div>
 
-                 <div className="flex gap-3">
+                  <div className="flex gap-3">
                     <button 
                       onClick={initiateBoot}
                       disabled={isBooting}
@@ -200,6 +207,13 @@ const MamePreservationCore: React.FC = () => {
                     >
                       {isBooting ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} className="fill-slate-950" />}
                       <span>Load ROM Buffer</span>
+                    </button>
+                    <button 
+                      onClick={handleUnlock}
+                      className="px-4 border border-amber-500/20 rounded-xl text-amber-500 hover:bg-amber-500/10 transition-all flex items-center justify-center gap-2 group"
+                      title="Unlock Achievement"
+                    >
+                      <Trophy size={14} className="group-hover:scale-110 transition-transform" />
                     </button>
                     <button 
                       onClick={getNeuralAnalysis}

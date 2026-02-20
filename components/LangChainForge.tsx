@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage, AIMessage, BaseMessage } from "@langchain/core/messages";
-import { StateGraph, END } from "@langchain/langgraph";
+import { StateGraph, START, END } from "@langchain/langgraph";
 import { 
   Link as LinkIcon, Layers, Zap, Play, Loader2, 
   Terminal, Search, Database, Code, Shield, 
@@ -51,7 +51,7 @@ const LangChainForge: React.FC = () => {
       
       // 1. Initialize Model
       const model = new ChatGoogleGenerativeAI({
-        modelName: "gemini-3-flash-preview",
+        model: "gemini-3-flash-preview",
         apiKey: process.env.API_KEY,
         maxOutputTokens: 2048,
       });
@@ -85,11 +85,10 @@ const LangChainForge: React.FC = () => {
             default: () => [],
           }
         }
-      });
-
-      workflow.addNode("agent", agentNode);
-      workflow.setEntryPoint("agent");
-      workflow.addEdge("agent", END);
+      })
+      .addNode("agent", agentNode)
+      .addEdge(START, "agent")
+      .addEdge("agent", END);
 
       const app = workflow.compile();
 
@@ -101,7 +100,7 @@ const LangChainForge: React.FC = () => {
       
       // Stream events if possible, or just await result
       // For simplicity in this UI, we'll await the final state
-      const finalState = await app.invoke(inputs);
+      const finalState = await app.invoke(inputs) as unknown as AgentState;
       
       const lastMessage = finalState.messages[finalState.messages.length - 1];
       const outputText = typeof lastMessage.content === 'string' ? lastMessage.content : JSON.stringify(lastMessage.content);
