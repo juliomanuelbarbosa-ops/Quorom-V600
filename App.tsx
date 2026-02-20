@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Terminal, Cpu, BrainCircuit, Wallet, Code, Database, ShieldAlert, Globe, Activity,
@@ -12,74 +11,139 @@ import {
 } from 'lucide-react';
 
 import useQuorumStore from './components/useQuorumStore';
-import HomeDashboard from './components/HomeDashboard';
-import GrokNexus from './components/GrokNexus';
-import TensorFlowPlayground from './components/TensorFlowPlayground';
-import AIToolsDirectory from './components/AIToolsDirectory';
-import CryptoHub from './components/CryptoHub';
-import GithubExplorer from './components/GithubExplorer';
-import GeminiOracle from './components/GeminiOracle';
-import MultiAgentHub from './components/MultiAgentHub';
-import RAGChatHub from './components/RAGChatHub';
-import LocalLLMRunner from './components/LocalLLMRunner';
-import NFTCreatorHub from './components/NFTCreatorHub';
-import StripePaymentHub from './components/StripePaymentHub';
-import ApiDashboardHub from './components/ApiDashboardHub';
-import DeveloperRoadmapExplorer from './components/DeveloperRoadmapExplorer';
-import JsAlgorithmsVisualizer from './components/JsAlgorithmsVisualizer';
-import AwesomeListsDirectory from './components/AwesomeListsDirectory';
-import PublicApisExplorer from './components/PublicApisExplorer';
-import SystemDesignPrimerHub from './components/SystemDesignPrimerHub';
-import ReactPlayground from './components/ReactPlayground';
-import CodingInterviewUniversity from './components/CodingInterviewUniversity';
-import CrewAgentHub from './components/CrewAgentHub';
-import MusicWiz from './components/MusicWiz';
-import VuePlayground from './components/VuePlayground';
-import AirbnbStyleGuideHub from './components/AirbnbStyleGuideHub';
-import OhMyZshConfigurator from './components/OhMyZshConfigurator';
-import BuildYourOwnXHub from './components/BuildYourOwnXHub';
-import PythonAlgorithmsVisualizer from './components/PythonAlgorithmsVisualizer';
-import SecurityAuditHub from './components/SecurityAuditHub';
-import LangGraphVisualizer from './components/LangGraphVisualizer';
-import TransformersJsHub from './components/TransformersJsHub';
-import OllamaLocalRunner from './components/OllamaLocalRunner';
-import FreeCodeCampHub from './components/FreeCodeCampHub';
-import ForecastForge from './components/ForecastForge';
-import VeoVideoForge from './components/VeoVideoForge';
-import NotebookLMHub from './components/NotebookLMHub';
-import LovableForge from './components/LovableForge';
-import OSProjectRegistry from './components/OSProjectRegistry';
-import NeuralConfig from './components/NeuralConfig';
-import NeuralLibrary from './components/NeuralLibrary';
-import AutoGPTHub from './components/AutoGPTHub';
-import StableDiffusionForge from './components/StableDiffusionForge';
-import N8NHub from './components/N8NHub';
-import LangChainForge from './components/LangChainForge';
-import DifyOrchestrator from './components/DifyOrchestrator';
-import OpenWebUIHub from './components/OpenWebUIHub';
-import SupabaseSubstrate from './components/SupabaseSubstrate';
-import ComfyUIForge from './components/ComfyUIForge';
-import NetdataObserver from './components/NetdataObserver';
-import PromptRegistry from './components/PromptRegistry';
-import MCPRegistry from './components/MCPRegistry';
-import EmulatorArchive from './components/EmulatorArchive';
-import MamePreservationCore from './components/MamePreservationCore';
-
-import MultiAgentSwarm from './components/MultiAgentSwarm';
-import BabelProtocol from './components/BabelProtocol';
-import QuorumDashboard from './components/QuorumDashboard';
-import ChainSight from './components/ChainSight';
-import GeminiVisionStudio from './components/GeminiVisionStudio';
-import GeminiAudioLab from './components/GeminiAudioLab';
-import FootballBettingHub from './components/FootballBettingHub';
-import SportsOracle from './components/SportsOracle';
-import SignalNexus from './components/SignalNexus';
-import GeoSentinel from './components/GeoSentinel';
-import CommandPalette from './components/CommandPalette';
-import OperatorPresence from './components/OperatorPresence';
 import { NavSection } from './types';
 
 import useQuorumPersistence from './components/useQuorumPersistence';
+
+// Lazy load all heavy modules (only loads when opened)
+const HomeDashboard = lazy(() => import('./components/HomeDashboard'));
+const GrokNexus = lazy(() => import('./components/GrokNexus'));
+const TensorFlowPlayground = lazy(() => import('./components/TensorFlowPlayground'));
+const AIToolsDirectory = lazy(() => import('./components/AIToolsDirectory'));
+const CryptoHub = lazy(() => import('./components/CryptoHub'));
+const GithubExplorer = lazy(() => import('./components/GithubExplorer'));
+const GeminiOracle = lazy(() => import('./components/GeminiOracle'));
+const MultiAgentHub = lazy(() => import('./components/MultiAgentHub'));
+const RAGChatHub = lazy(() => import('./components/RAGChatHub'));
+const LocalLLMRunner = lazy(() => import('./components/LocalLLMRunner'));
+const NFTCreatorHub = lazy(() => import('./components/NFTCreatorHub'));
+const StripePaymentHub = lazy(() => import('./components/StripePaymentHub'));
+const ApiDashboardHub = lazy(() => import('./components/ApiDashboardHub'));
+const DeveloperRoadmapExplorer = lazy(() => import('./components/DeveloperRoadmapExplorer'));
+const JsAlgorithmsVisualizer = lazy(() => import('./components/JsAlgorithmsVisualizer'));
+const AwesomeListsDirectory = lazy(() => import('./components/AwesomeListsDirectory'));
+const PublicApisExplorer = lazy(() => import('./components/PublicApisExplorer'));
+const SystemDesignPrimerHub = lazy(() => import('./components/SystemDesignPrimerHub'));
+const ReactPlayground = lazy(() => import('./components/ReactPlayground'));
+const CodingInterviewUniversity = lazy(() => import('./components/CodingInterviewUniversity'));
+const CrewAgentHub = lazy(() => import('./components/CrewAgentHub'));
+const MusicWiz = lazy(() => import('./components/MusicWiz'));
+const VuePlayground = lazy(() => import('./components/VuePlayground'));
+const AirbnbStyleGuideHub = lazy(() => import('./components/AirbnbStyleGuideHub'));
+const OhMyZshConfigurator = lazy(() => import('./components/OhMyZshConfigurator'));
+const BuildYourOwnXHub = lazy(() => import('./components/BuildYourOwnXHub'));
+const PythonAlgorithmsVisualizer = lazy(() => import('./components/PythonAlgorithmsVisualizer'));
+const SecurityAuditHub = lazy(() => import('./components/SecurityAuditHub'));
+const LangGraphVisualizer = lazy(() => import('./components/LangGraphVisualizer'));
+const TransformersJsHub = lazy(() => import('./components/TransformersJsHub'));
+const OllamaLocalRunner = lazy(() => import('./components/OllamaLocalRunner'));
+const FreeCodeCampHub = lazy(() => import('./components/FreeCodeCampHub'));
+const ForecastForge = lazy(() => import('./components/ForecastForge'));
+const VeoVideoForge = lazy(() => import('./components/VeoVideoForge'));
+const NotebookLMHub = lazy(() => import('./components/NotebookLMHub'));
+const LovableForge = lazy(() => import('./components/LovableForge'));
+const OSProjectRegistry = lazy(() => import('./components/OSProjectRegistry'));
+const NeuralConfig = lazy(() => import('./components/NeuralConfig'));
+const NeuralLibrary = lazy(() => import('./components/NeuralLibrary'));
+const AutoGPTHub = lazy(() => import('./components/AutoGPTHub'));
+const StableDiffusionForge = lazy(() => import('./components/StableDiffusionForge'));
+const N8NHub = lazy(() => import('./components/N8NHub'));
+const LangChainForge = lazy(() => import('./components/LangChainForge'));
+const DifyOrchestrator = lazy(() => import('./components/DifyOrchestrator'));
+const OpenWebUIHub = lazy(() => import('./components/OpenWebUIHub'));
+const SupabaseSubstrate = lazy(() => import('./components/SupabaseSubstrate'));
+const ComfyUIForge = lazy(() => import('./components/ComfyUIForge'));
+const NetdataObserver = lazy(() => import('./components/NetdataObserver'));
+const PromptRegistry = lazy(() => import('./components/PromptRegistry'));
+const MCPRegistry = lazy(() => import('./components/MCPRegistry'));
+const EmulatorArchive = lazy(() => import('./components/EmulatorArchive'));
+const MamePreservationCore = lazy(() => import('./components/MamePreservationCore'));
+const MultiAgentSwarm = lazy(() => import('./components/MultiAgentSwarm'));
+const BabelProtocol = lazy(() => import('./components/BabelProtocol'));
+const QuorumDashboard = lazy(() => import('./components/QuorumDashboard'));
+const ChainSight = lazy(() => import('./components/ChainSight'));
+const GeminiVisionStudio = lazy(() => import('./components/GeminiVisionStudio'));
+const GeminiAudioLab = lazy(() => import('./components/GeminiAudioLab'));
+const FootballBettingHub = lazy(() => import('./components/FootballBettingHub'));
+const SportsOracle = lazy(() => import('./components/SportsOracle'));
+const SignalNexus = lazy(() => import('./components/SignalNexus'));
+const GeoSentinel = lazy(() => import('./components/GeoSentinel'));
+const CommandPalette = lazy(() => import('./components/CommandPalette'));
+const OperatorPresence = lazy(() => import('./components/OperatorPresence'));
+
+const componentMap: Record<string, React.LazyExoticComponent<React.FC<any>>> = {
+  dashboard: HomeDashboard,
+  home: GrokNexus,
+  'tensorflow-playground': TensorFlowPlayground,
+  'ai-tools-directory': AIToolsDirectory,
+  'wallet-connector': CryptoHub,
+  'token-creator': CryptoHub,
+  'github-api': GithubExplorer,
+  'gemini-oracle': GeminiOracle,
+  'gemini-vision': GeminiVisionStudio,
+  'gemini-audio': GeminiAudioLab,
+  'multi-agent-swarm': MultiAgentSwarm,
+  'babel-protocol': BabelProtocol,
+  'chain-sight': ChainSight,
+  'signal-nexus': SignalNexus,
+  'geo-vigilance': GeoSentinel,
+  'multi-agent-hub': MultiAgentHub,
+  'autogpt-hub': AutoGPTHub,
+  'dify-orchestrator': DifyOrchestrator,
+  'open-webui': OpenWebUIHub,
+  'mcp-registry': MCPRegistry,
+  'prompt-registry': PromptRegistry,
+  'supabase-substrate': SupabaseSubstrate,
+  'comfyui-forge': ComfyUIForge,
+  'netdata-observer': NetdataObserver,
+  'mame-preservation': MamePreservationCore,
+  'emulator-archive': EmulatorArchive,
+  'langchain-forge': LangChainForge,
+  'diffusion-forge': StableDiffusionForge,
+  'n8n-automator': N8NHub,
+  'crew-agent-hub': CrewAgentHub,
+  'rag-chat': RAGChatHub,
+  'local-llm': LocalLLMRunner,
+  'nft-creator': NFTCreatorHub,
+  'stripe-payments': StripePaymentHub,
+  'football-betting': FootballBettingHub,
+  'sports-oracle': SportsOracle,
+  'api-dashboard': ApiDashboardHub,
+  'developer-roadmap': DeveloperRoadmapExplorer,
+  'js-algorithms': JsAlgorithmsVisualizer,
+  'awesome-lists': AwesomeListsDirectory,
+  'public-apis': PublicApisExplorer,
+  'system-design': SystemDesignPrimerHub,
+  'react-playground': ReactPlayground,
+  'vue-playground': VuePlayground,
+  'coding-interview': CodingInterviewUniversity,
+  'airbnb-style': AirbnbStyleGuideHub,
+  'oh-my-zsh': OhMyZshConfigurator,
+  'build-your-own-x': BuildYourOwnXHub,
+  'python-algorithms': PythonAlgorithmsVisualizer,
+  'security-audit': SecurityAuditHub,
+  'langgraph-visualizer': LangGraphVisualizer,
+  'transformers-js': TransformersJsHub,
+  'ollama-runner': OllamaLocalRunner,
+  'freecodecamp': FreeCodeCampHub,
+  'forecast-forge': ForecastForge,
+  'veo-video-forge': VeoVideoForge,
+  'notebook-lm': NotebookLMHub,
+  'lovable-forge': LovableForge,
+  'os-project-registry': OSProjectRegistry,
+  'neural-library': NeuralLibrary,
+  'neural-config': NeuralConfig, // NeuralConfig is not in navSections, but might be used elsewhere
+};
 
 const App: React.FC = () => {
   const { activeView: activeModule, setActiveView: setActiveModule, saveGameProgress } = useQuorumStore();
@@ -182,69 +246,18 @@ const App: React.FC = () => {
   ];
 
   const renderContent = () => {
-    switch (activeModule) {
-      case 'dashboard': return <HomeDashboard />;
-      case 'home': return <GrokNexus onNavigate={setActiveModule} />;
-      case 'tensorflow-playground': return <TensorFlowPlayground />;
-      case 'ai-tools-directory': return <AIToolsDirectory />;
-      case 'wallet-connector': 
-      case 'token-creator': return <CryptoHub mode={activeModule === 'token-creator' ? 'creator' : 'wallet'} />;
-      case 'github-api': return <GithubExplorer />;
-      case 'gemini-oracle': return <GeminiOracle />;
-      case 'gemini-vision': return <GeminiVisionStudio />;
-      case 'gemini-audio': return <GeminiAudioLab />;
-      case 'multi-agent-swarm': return <MultiAgentSwarm />;
-      case 'babel-protocol': return <QuorumDashboard />;
-      case 'chain-sight': return <ChainSight />;
-      case 'signal-nexus': return <SignalNexus />;
-      case 'geo-vigilance': return <GeoVigilanceHub />;
-      case 'multi-agent-hub': return <MultiAgentHub />;
-      case 'autogpt-hub': return <AutoGPTHub />;
-      case 'dify-orchestrator': return <DifyOrchestrator />;
-      case 'open-webui': return <OpenWebUIHub />;
-      case 'mcp-registry': return <MCPRegistry />;
-      case 'prompt-registry': return <PromptRegistry />;
-      case 'supabase-substrate': return <SupabaseSubstrate />;
-      case 'comfyui-forge': return <ComfyUIForge />;
-      case 'netdata-observer': return <NetdataObserver />;
-      case 'mame-preservation': return <MamePreservationCore />;
-      case 'emulator-archive': return <EmulatorArchive />;
-      case 'langchain-forge': return <LangChainForge />;
-      case 'diffusion-forge': return <StableDiffusionForge />;
-      case 'n8n-automator': return <N8NHub />;
-      case 'crew-agent-hub': return <CrewAgentHub />;
-      case 'rag-chat': return <RAGChatHub />;
-      case 'local-llm': return <LocalLLMRunner />;
-      case 'nft-creator': return <NFTCreatorHub />;
-      case 'stripe-payments': return <StripePaymentHub />;
-      case 'football-betting': return <FootballBettingHub />;
-      case 'sports-oracle': return <SportsOracle />;
-      case 'api-dashboard': return <ApiDashboardHub />;
-      case 'developer-roadmap': return <DeveloperRoadmapExplorer />;
-      case 'js-algorithms': return <JsAlgorithmsVisualizer />;
-      case 'awesome-lists': return <AwesomeListsDirectory />;
-      case 'public-apis': return <PublicApisExplorer />;
-      case 'system-design': return <SystemDesignPrimerHub />;
-      case 'react-playground': return <ReactPlayground />;
-      case 'vue-playground': return <VuePlayground />;
-      case 'coding-interview': return <CodingInterviewUniversity />;
-      case 'airbnb-style': return <AirbnbStyleGuideHub />;
-      case 'oh-my-zsh': return <OhMyZshConfigurator />;
-      case 'build-your-own-x': return <BuildYourOwnXHub />;
-      case 'python-algorithms': return <PythonAlgorithmsVisualizer />;
-      case 'security-audit': return <SecurityAuditHub />;
-      case 'langgraph-visualizer': return <LangGraphVisualizer />;
-      case 'transformers-js': return <TransformersJsHub />;
-      case 'ollama-runner': return <OllamaLocalRunner />;
-      case 'freecodecamp': return <FreeCodeCampHub />;
-      case 'forecast-forge': return <ForecastForge />;
-      case 'veo-video-forge': return <VeoVideoForge />;
-      case 'notebook-lm': return <NotebookLMHub />;
-      case 'lovable-forge': return <LovableForge />;
-      case 'os-project-registry': return <OSProjectRegistry />;
-      case 'neural-library': return <NeuralLibrary />;
-      default: return <HomeDashboard />;
-    }
+    const Component = componentMap[activeModule];
+    if (!Component) return <div className="p-8 text-red-400">Module {activeModule} not implemented yet</div>;
+  
+    return (
+      <Suspense fallback={<div className="flex h-full items-center justify-center text-cyan-500 text-xl animate-pulse">Booting neural core...</div>}>
+        {activeModule === 'wallet-connector' || activeModule === 'token-creator' ? (
+          <CryptoHub mode={activeModule === 'token-creator' ? 'creator' : 'wallet'} />
+        ) : (
+          <Component />
+        )}
+      </Suspense>
+    );
   };
 
   const getSidebarIcon = (id: string) => {
@@ -273,7 +286,7 @@ const App: React.FC = () => {
       case 'comfyui-forge': return <Shapes size={14} />;
       case 'langchain-forge': return <LinkIcon size={14} />;
       case 'diffusion-forge': return <ImageIcon size={14} />;
-      case 'n8n-automator': return <Network size={14} />;
+      case 'n8n-automator': return <Network size={14} />; 
       case 'forecast-forge': return <TrendingUp size={14} />;
       case 'veo-video-forge': return <Video size={14} />;
       case 'notebook-lm': return <BookOpen size={14} />;

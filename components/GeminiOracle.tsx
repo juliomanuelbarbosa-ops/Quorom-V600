@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI, ThinkingLevel, Type, FunctionDeclaration } from "@google/genai";
+import { ThinkingLevel, Type, FunctionDeclaration } from "@google/genai";
 import { 
   Send, Bot, User, Loader2, Info, 
   Sparkles, Zap, Globe, MapPin, BrainCircuit,
@@ -142,7 +142,6 @@ const GeminiOracle: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const { model, config } = getModelConfig(mode);
       
       const finalConfig = {
@@ -152,46 +151,46 @@ const GeminiOracle: React.FC = () => {
           : "You are the central oracle of THE QUORUM v600.0. Speak in a concise, technical, cyberpunk tone. If using tools, integrate the results naturally.",
       };
 
-      const response = await ai.models.generateContent({
-        model: model,
-        contents: userMessage,
-        config: finalConfig
+      const response = await fetch('/api/gemini/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: model,
+          contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+          config: finalConfig,
+        }),
       });
 
-      // Handle function calls if in operator mode
-      if (mode === 'operator' && response.functionCalls) {
-        for (const call of response.functionCalls) {
-          if (call.name === 'add_intel_brief') {
-            const args = call.args as any;
-            addIntelBrief({
-              id: `ai-${Date.now()}`,
-              timestamp: new Date().toLocaleTimeString('en-US', { hour12: false }),
-              type: args.type,
-              content: args.content,
-              severity: args.severity
-            });
-          } else if (call.name === 'unlock_achievement') {
-            const args = call.args as any;
-            unlockAchievement(args.text, args.xp);
-          } else if (call.name === 'navigate_to_module') {
-            const args = call.args as any;
-            setActiveView(args.moduleId);
-          } else if (call.name === 'get_system_status') {
-            // We can't easily send feedback back to the model in this simple UI loop without a chat session,
-            // but we can at least acknowledge it or show it in the response.
-            console.log("System status requested by AI");
-          }
-        }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch from Gemini API proxy.');
       }
 
-      const text = response.text || (response.functionCalls ? "EXECUTING_SYSTEM_COMMANDS..." : "PROTOCOL_ERROR: Signal lost in the mesh.");
-      const grounding = response.candidates?.[0]?.groundingMetadata;
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('Failed to get reader from response body.');
 
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: text,
-        groundingMetadata: grounding
-      }]);
+      let streamedText = '';
+      let done = false;
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        const chunk = new TextDecoder().decode(value);
+        streamedText += chunk;
+        setMessages(prev => {
+          const lastMessage = prev[prev.length - 1];
+          if (lastMessage && lastMessage.role === 'assistant') {
+            return [...prev.slice(0, -1), { ...lastMessage, content: streamedText }];
+          } else {
+            return [...prev, { role: 'assistant', content: streamedText }];
+          }
+        });
+      }
+
+      // Function calls and grounding metadata will need to be handled server-side or via a separate client-side mechanism.
+      // For now, these features are disabled when using the proxy.
 
     } catch (error: any) {
       console.error(error);
@@ -284,18 +283,14 @@ const GeminiOracle: React.FC = () => {
             messages.map((m, idx) => (
               <div key={idx} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] flex items-start gap-4 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border ${
-                    m.role === 'user' ? 'bg-slate-800 border-slate-700 text-slate-400' : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
-                  }`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border ${m.role === 'user' ? 'bg-slate-800 border-slate-700 text-slate-400' : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'}`}>
                     {m.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                   </div>
                   
                   <div className="space-y-2">
-                    <div className={`p-5 rounded-2xl text-sm leading-relaxed shadow-lg ${
-                      m.role === 'user' 
+                    <div className={`p-5 rounded-2xl text-sm leading-relaxed shadow-lg ${m.role === 'user' 
                         ? 'bg-slate-800 text-slate-200 rounded-tr-none border border-slate-700' 
-                        : 'bg-slate-950 text-cyan-50 rounded-tl-none border border-cyan-500/20'
-                    }`}>
+                        : 'bg-slate-950 text-cyan-50 rounded-tl-none border border-cyan-500/20'}`}>
                       <div className="whitespace-pre-wrap font-mono text-xs md:text-sm">{m.content}</div>
                     </div>
 
