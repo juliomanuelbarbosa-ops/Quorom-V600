@@ -121,19 +121,19 @@ const SupabaseSubstrate: React.FC = () => {
                    </div>
                    <div className="flex-1 space-y-3 font-mono text-[9px]">
                       <div className="flex justify-between p-2 bg-emerald-500/5 rounded border border-emerald-500/10 text-emerald-500/60">
-                         <span>> INSERT IN table 'MESH_LOGS'</span>
+                         <span>{'>'} INSERT IN table 'MESH_LOGS'</span>
                          <span>JUST NOW</span>
                       </div>
                       <div className="flex justify-between p-2 bg-slate-900/50 rounded border border-emerald-500/5 text-emerald-900">
-                         <span>> UPDATE IN table 'NODE_CONFIG'</span>
+                         <span>{'>'} UPDATE IN table 'NODE_CONFIG'</span>
                          <span>12:44:02</span>
                       </div>
                       <div className="flex justify-between p-2 bg-slate-900/50 rounded border border-emerald-500/5 text-emerald-900">
-                         <span>> DELETE FROM table 'TEMP_SUBSTRATE'</span>
+                         <span>{'>'} DELETE FROM table 'TEMP_SUBSTRATE'</span>
                          <span>12:42:15</span>
                       </div>
                       <div className="flex justify-between p-2 bg-slate-900/50 rounded border border-emerald-500/5 text-emerald-900">
-                         <span>> RPC 'SYNC_GLOBAL_STATE' EXECUTED</span>
+                         <span>{'>'} RPC 'SYNC_GLOBAL_STATE' EXECUTED</span>
                          <span>12:39:58</span>
                       </div>
                    </div>

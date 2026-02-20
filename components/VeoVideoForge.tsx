@@ -1,14 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GoogleGenAI } from "@google/genai";
 import { 
   Video, Film, Zap, Play, Loader2, Info, 
   ShieldAlert, ExternalLink, Download, Settings,
-  Clock, Monitor, Layers, Sparkles
+  Clock, Monitor, Layers, Sparkles, Image as ImageIcon,
+  Upload, X
 } from 'lucide-react';
 
+type GenerationMode = 'text-to-video' | 'image-to-video';
+
 const VeoVideoForge: React.FC = () => {
+  const [mode, setMode] = useState<GenerationMode>('text-to-video');
   const [prompt, setPrompt] = useState('');
   const [resolution, setResolution] = useState<'720p' | '1080p'>('720p');
   const [aspectRatio, setAspectRatio] = useState<'16:9' | '9:16'>('16:9');
@@ -17,6 +21,9 @@ const VeoVideoForge: React.FC = () => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [hasKey, setHasKey] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const [inputImage, setInputImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     checkApiKey();
@@ -34,8 +41,18 @@ const VeoVideoForge: React.FC = () => {
     // @ts-ignore
     if (window.aistudio) {
       await window.aistudio.openSelectKey();
-      // Assume success as per race condition rules
       setHasKey(true);
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setInputImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -49,7 +66,9 @@ const VeoVideoForge: React.FC = () => {
   ];
 
   const generateVideo = async () => {
-    if (!prompt.trim() || isGenerating) return;
+    if (isGenerating) return;
+    if (mode === 'text-to-video' && !prompt.trim()) return;
+    if (mode === 'image-to-video' && !inputImage) return;
 
     setIsGenerating(true);
     setVideoUrl(null);
@@ -62,15 +81,33 @@ const VeoVideoForge: React.FC = () => {
 
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      let operation = await ai.models.generateVideos({
+      
+      let requestPayload: any = {
         model: 'veo-3.1-fast-generate-preview',
-        prompt: prompt,
         config: {
           numberOfVideos: 1,
           resolution: resolution,
           aspectRatio: aspectRatio
         }
-      });
+      };
+
+      if (mode === 'image-to-video' && inputImage) {
+        const base64Data = inputImage.split(',')[1];
+        const mimeType = inputImage.split(';')[0].split(':')[1];
+        
+        requestPayload.image = {
+          imageBytes: base64Data,
+          mimeType: mimeType
+        };
+        // Prompt is optional for image-to-video but good to include if present
+        if (prompt.trim()) {
+          requestPayload.prompt = prompt;
+        }
+      } else {
+        requestPayload.prompt = prompt;
+      }
+
+      let operation = await ai.models.generateVideos(requestPayload);
 
       while (!operation.done) {
         await new Promise(resolve => setTimeout(resolve, 10000));
@@ -143,8 +180,23 @@ const VeoVideoForge: React.FC = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/20 rounded text-[10px] text-cyan-400 font-black uppercase tracking-widest">
-            ENGINE: VEO-3.1-FAST
+          <div className="flex gap-2 bg-slate-900/50 p-1 rounded-lg border border-cyan-500/20">
+            <button
+              onClick={() => setMode('text-to-video')}
+              className={`px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest transition-all ${
+                mode === 'text-to-video' ? 'bg-cyan-500 text-slate-950' : 'text-cyan-900 hover:text-cyan-400'
+              }`}
+            >
+              Text-to-Video
+            </button>
+            <button
+              onClick={() => setMode('image-to-video')}
+              className={`px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest transition-all ${
+                mode === 'image-to-video' ? 'bg-cyan-500 text-slate-950' : 'text-cyan-900 hover:text-cyan-400'
+              }`}
+            >
+              Image-to-Video
+            </button>
           </div>
         </div>
       </div>
@@ -152,9 +204,50 @@ const VeoVideoForge: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="space-y-6">
           <div className="glass-panel p-6 rounded-2xl border border-cyan-500/20 space-y-6">
+            
+            {mode === 'image-to-video' && (
+              <div className="space-y-4">
+                <label className="text-[10px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
+                  <ImageIcon size={12} /> Input Frame
+                </label>
+                <div 
+                  className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center transition-all relative overflow-hidden group ${
+                    inputImage ? 'border-cyan-500/30 bg-slate-900/50' : 'border-cyan-500/20 hover:border-cyan-500/40 hover:bg-cyan-500/5'
+                  }`}
+                >
+                  {inputImage ? (
+                    <div className="relative w-full h-32 flex items-center justify-center">
+                      <img src={inputImage} alt="Preview" className="max-w-full max-h-full object-contain rounded" />
+                      <button 
+                        onClick={() => setInputImage(null)}
+                        className="absolute top-0 right-0 p-1.5 bg-slate-950/80 text-red-400 rounded-full hover:bg-red-500 hover:text-white transition-all"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-center space-y-2 pointer-events-none">
+                      <Upload size={24} className="text-cyan-800 mx-auto" />
+                      <p className="text-[9px] text-cyan-800 font-bold uppercase tracking-widest">
+                        Upload Source Image
+                      </p>
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    disabled={!!inputImage}
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="space-y-4">
               <label className="text-[10px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
-                <Sparkles size={12} /> Temporal Prompt
+                <Sparkles size={12} /> {mode === 'image-to-video' ? 'Prompt (Optional)' : 'Temporal Prompt'}
               </label>
               <textarea 
                 value={prompt}

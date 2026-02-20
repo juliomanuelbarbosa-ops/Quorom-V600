@@ -7,7 +7,7 @@ import {
   Map as MapIcon, BookOpen, Layout, Binary, Monitor, CheckSquare, Network, Rocket,
   ShieldCheck, TerminalSquare, Wrench, Shapes, Bot, Command, Globe2, Sparkles,
   Link as LinkIcon, Lock, TrendingUp, Video, Heart, Github, Settings, Library,
-  Image as ImageIcon, FileCode, Gamepad2, Gamepad
+  Image as ImageIcon, FileCode, Gamepad2, Gamepad, Trophy, Wand2, Crosshair, Eye, Headphones
 } from 'lucide-react';
 
 import GrokNexus from './components/GrokNexus';
@@ -62,6 +62,14 @@ import MCPRegistry from './components/MCPRegistry';
 import EmulatorArchive from './components/EmulatorArchive';
 import MamePreservationCore from './components/MamePreservationCore';
 
+import MultiAgentSwarm from './components/MultiAgentSwarm';
+import BabelProtocol from './components/BabelProtocol';
+import QuorumDashboard from './components/QuorumDashboard';
+import ChainSight from './components/ChainSight';
+import GeminiVisionStudio from './components/GeminiVisionStudio';
+import GeminiAudioLab from './components/GeminiAudioLab';
+import FootballBettingHub from './components/FootballBettingHub';
+import SportsOracle from './components/SportsOracle';
 import { NavSection } from './types';
 
 const App: React.FC = () => {
@@ -81,7 +89,12 @@ const App: React.FC = () => {
       title: "CORE SYSTEMS", 
       items: [
         { id: 'home', label: 'GROK NEXUS', icon: 'Globe' },
-        { id: 'gemini-oracle', label: 'GEMINI ORACLE', icon: 'BrainCircuit' },
+        { id: 'gemini-oracle', label: 'GEMINI OMNI-ORACLE', icon: 'BrainCircuit' },
+        { id: 'gemini-vision', label: 'GEMINI VISION', icon: 'Eye' },
+        { id: 'gemini-audio', label: 'GEMINI AUDIO', icon: 'Headphones' },
+        { id: 'multi-agent-swarm', label: 'SWARM INTELLIGENCE', icon: 'Network' },
+        { id: 'babel-protocol', label: 'BABEL PROTOCOL', icon: 'GitMerge' },
+        { id: 'chain-sight', label: 'CHAINSIGHT', icon: 'Eye' },
         { id: 'api-dashboard', label: 'LIVE DATAFEED', icon: 'BarChart3' },
         { id: 'supabase-substrate', label: 'SUPABASE BACKEND', icon: 'Database' },
         { id: 'netdata-observer', label: 'NETDATA OBSERVER', icon: 'Activity' },
@@ -141,7 +154,9 @@ const App: React.FC = () => {
         { id: 'wallet-connector', label: 'SOVEREIGN WALLET', icon: 'Wallet' },
         { id: 'token-creator', label: 'MINT PROTOCOL', icon: 'Zap' },
         { id: 'nft-creator', label: 'NFT FORGE', icon: 'Layers' },
-        { id: 'stripe-payments', label: 'STRIPE GATEWAY', icon: 'CreditCard' }
+        { id: 'stripe-payments', label: 'STRIPE GATEWAY', icon: 'CreditCard' },
+        { id: 'football-betting', label: 'FOOTBALL NEXUS', icon: 'Trophy' },
+        { id: 'sports-oracle', label: 'SPORTS ORACLE', icon: 'Crosshair' }
       ] 
     },
     { 
@@ -163,6 +178,11 @@ const App: React.FC = () => {
       case 'token-creator': return <CryptoHub mode={activeModule === 'token-creator' ? 'creator' : 'wallet'} />;
       case 'github-api': return <GithubExplorer />;
       case 'gemini-oracle': return <GeminiOracle />;
+      case 'gemini-vision': return <GeminiVisionStudio />;
+      case 'gemini-audio': return <GeminiAudioLab />;
+      case 'multi-agent-swarm': return <MultiAgentSwarm />;
+      case 'babel-protocol': return <QuorumDashboard />;
+      case 'chain-sight': return <ChainSight />;
       case 'multi-agent-hub': return <MultiAgentHub />;
       case 'autogpt-hub': return <AutoGPTHub />;
       case 'dify-orchestrator': return <DifyOrchestrator />;
@@ -182,6 +202,8 @@ const App: React.FC = () => {
       case 'local-llm': return <LocalLLMRunner />;
       case 'nft-creator': return <NFTCreatorHub />;
       case 'stripe-payments': return <StripePaymentHub />;
+      case 'football-betting': return <FootballBettingHub />;
+      case 'sports-oracle': return <SportsOracle />;
       case 'api-dashboard': return <ApiDashboardHub />;
       case 'developer-roadmap': return <DeveloperRoadmapExplorer />;
       case 'js-algorithms': return <JsAlgorithmsVisualizer />;
@@ -214,6 +236,11 @@ const App: React.FC = () => {
     switch (id) {
       case 'home': return <Globe size={14} />;
       case 'gemini-oracle': return <BrainCircuit size={14} />;
+      case 'gemini-vision': return <Eye size={14} />;
+      case 'gemini-audio': return <Headphones size={14} />;
+      case 'multi-agent-swarm': return <Network size={14} />;
+      case 'babel-protocol': return <GitMerge size={14} />;
+      case 'chain-sight': return <Eye size={14} />;
       case 'api-dashboard': return <BarChart3 size={14} />;
       case 'supabase-substrate': return <Database size={14} />;
       case 'netdata-observer': return <Activity size={14} />;
@@ -259,6 +286,8 @@ const App: React.FC = () => {
       case 'token-creator': return <Zap size={14} />;
       case 'nft-creator': return <Layers size={14} />;
       case 'stripe-payments': return <CreditCard size={14} />;
+      case 'football-betting': return <Trophy size={14} />;
+      case 'sports-oracle': return <Crosshair size={14} />;
       case 'ai-tools-directory': return <Search size={14} />;
       case 'neural-library': return <Library size={14} />;
       case 'security-audit': return <ShieldAlert size={14} />;

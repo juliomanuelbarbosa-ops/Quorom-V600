@@ -12,7 +12,7 @@ interface MCPServer {
   name: string;
   repo: string;
   description: string;
-  category: 'Storage' | 'Tools' | 'Social' | 'Cloud' | 'Search' | 'Development';
+  category: 'Storage' | 'Tools' | 'Social' | 'Cloud' | 'Search' | 'Development' | 'Finance' | 'Design' | 'Memory' | 'Productivity';
   author: string;
   capabilities: string[];
 }
@@ -81,6 +81,94 @@ const MCP_SERVERS: MCPServer[] = [
     category: "Search",
     author: "Anthropic",
     capabilities: ["Web Search", "Local Results", "Privacy Shield"]
+  },
+  {
+    name: "Figma-Framelink MCP",
+    repo: "figma/mcp-server",
+    description: "Connects directly to Figma data, bridging the gap between UI designs and React/Tailwind implementation.",
+    category: "Design",
+    author: "Figma",
+    capabilities: ["Read Designs", "Export Assets", "Inspect Nodes"]
+  },
+  {
+    name: "Vercel MCP",
+    repo: "vercel/mcp-server",
+    description: "Deploy, configure, and interrogate serverless edge functions and static hosting resources.",
+    category: "Cloud",
+    author: "Vercel",
+    capabilities: ["Deployments", "Logs", "Edge Config"]
+  },
+  {
+    name: "Playwright MCP",
+    repo: "microsoft/playwright-mcp",
+    description: "Launch a headless browser, navigate pages, and visually inspect UI elements for testing.",
+    category: "Tools",
+    author: "Microsoft",
+    capabilities: ["Browser Automation", "UI Testing", "Screenshots"]
+  },
+  {
+    name: "AlphaVantage MCP",
+    repo: "alphavantage/mcp-server",
+    description: "Enterprise-grade stock market, ETF, and forex data for financial analysis.",
+    category: "Finance",
+    author: "AlphaVantage",
+    capabilities: ["Stock Data", "Forex", "Technical Indicators"]
+  },
+  {
+    name: "Binance MCP",
+    repo: "binance/mcp-server",
+    description: "Real-time cryptocurrency price feeds, order books, and ticker data.",
+    category: "Finance",
+    author: "Binance",
+    capabilities: ["Crypto Prices", "Order Books", "Trade History"]
+  },
+  {
+    name: "BigQuery MCP",
+    repo: "google/mcp-bigquery",
+    description: "Interpret schemas and run SQL queries against massive enterprise datasets in place.",
+    category: "Storage",
+    author: "Google",
+    capabilities: ["SQL Queries", "Schema Analysis", "Data Warehousing"]
+  },
+  {
+    name: "Firecrawl MCP",
+    repo: "mendable/firecrawl-mcp",
+    description: "Bypass bot detection and turn any website URL into clean, structured Markdown data.",
+    category: "Search",
+    author: "Mendable",
+    capabilities: ["Web Scraping", "Markdown Extraction", "Anti-Bot Bypass"]
+  },
+  {
+    name: "Supabase MCP",
+    repo: "supabase/mcp-server",
+    description: "Direct, natural-language database interaction for reading and writing to backend.",
+    category: "Storage",
+    author: "Supabase",
+    capabilities: ["Database CRUD", "Auth Management", "Realtime Subs"]
+  },
+  {
+    name: "Knowledge Graph Memory",
+    repo: "neo4j/mcp-memory",
+    description: "Persistent memory system storing entities and relationships for long-term recall.",
+    category: "Memory",
+    author: "Neo4j",
+    capabilities: ["Entity Extraction", "Relationship Mapping", "Graph Query"]
+  },
+  {
+    name: "Notion MCP",
+    repo: "notion/mcp-server",
+    description: "Pull in workspace context, documentation, and team communications.",
+    category: "Productivity",
+    author: "Notion",
+    capabilities: ["Page Access", "Database Query", "Content Search"]
+  },
+  {
+    name: "Google Calendar MCP",
+    repo: "google/mcp-calendar",
+    description: "Reason over schedules, check availability, and manage time-series events.",
+    category: "Productivity",
+    author: "Google",
+    capabilities: ["Event Management", "Availability Check", "Scheduling"]
   }
 ];
 
@@ -166,6 +254,9 @@ const MCPRegistry: React.FC = () => {
                 <span className={`px-2.5 py-1 rounded text-[8px] font-black uppercase tracking-widest border ${
                   server.category === 'Storage' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                   server.category === 'Development' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                  server.category === 'Finance' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                  server.category === 'Design' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' :
+                  server.category === 'Memory' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
                   'bg-cyan-500/10 text-cyan-400 border-cyan-500/20'
                 }`}>
                   {server.category}
