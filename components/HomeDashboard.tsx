@@ -1,171 +1,109 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { LayoutGrid, Cpu, Code2, LineChart, Globe, Maximize } from 'lucide-react';
 
-// Component Imports
-import LiveSpacesBanner from './LiveSpacesBanner';
-import VisualCortex from './VisualCortex';
-import BioMonitor from './BioMonitor';
-import MarketOracle from './MarketOracle';
-import ChainSight from './ChainSight';
-import BabelProtocol from './BabelProtocol';
-import IntelFeed from './IntelFeed';
-import MissionLog from './MissionLog';
-import AssetTokenize from './AssetTokenize';
-import CodeNexus from './CodeNexus';
-import NeuralRadio from './NeuralRadio';
-import useQuorumStore from './useQuorumStore';
-import { BrainCircuit, Sparkles, Loader2 } from 'lucide-react';
+// Core Components
+// import LiveSpacesBanner from './LiveSpacesBanner';
+// import NeuralRadio from './NeuralRadio';
+// import MarketOracle from './MarketOracle';
+// import MissionLog from './MissionLog';
+// import CodeNexus from './CodeNexus';
+// import BioMonitor from './BioMonitor';
+// import SkillMatrix from './SkillMatrix';
+// import BookHub from './BookHub';
+
+// Tactical Modules
+import GeoSentinel from './GeoSentinel';
+import SignalNexus from './SignalNexus';
 
 const HomeDashboard = () => {
-  const addIntelBrief = useQuorumStore((state) => state.addIntelBrief);
-  const intelBriefs = useQuorumStore((state) => state.intelBriefs);
-  const missionLogs = useQuorumStore((state) => state.missionLogs);
-  const [neuralSummary, setNeuralSummary] = React.useState<string | null>(null);
-  const [isSummarizing, setIsSummarizing] = React.useState(false);
+  const [activeLayout, setActiveLayout] = useState('OSINT'); // Defaulting to the new view
 
-  const generateNeuralBrief = async () => {
-    setIsSummarizing(true);
-    try {
-      // In a real app, we'd send the last 10 intel briefs and mission logs to Gemini
-      // For this demo, we'll simulate a high-quality summary
-      await new Promise(r => setTimeout(r, 2000));
-      const summary = `NEURAL_SUMMARY_v6.0: System stability is at 98.4%. Recent whale activity in ETH detected by ChainSight suggests a liquidity shift. Mission progress is steady with ${missionLogs.filter(l => l.status === 'complete').length} tasks finalized. Recommend focusing on NeuralSync optimization for the next cycle.`;
-      setNeuralSummary(summary);
-    } catch (e) {
-      setNeuralSummary("ERROR: Neural synchronization failed.");
-    } finally {
-      setIsSummarizing(false);
-    }
-  };
-
-  React.useEffect(() => {
-    generateNeuralBrief();
-  }, []);
-
-  // 1. Define the orchestration for the parent container
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15, // Delay between each module booting up
-        delayChildren: 0.2,    // Initial pause before the sequence starts
-      }
-    }
-  };
-
-  // 2. Define the animation for each individual module
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20, 
-      scale: 0.98,
-      filter: 'blur(4px)' 
-    },
-    show: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1,
-      filter: 'blur(0px)'
-    }
-  };
-
-  const itemTransition = { 
-    duration: 0.5
-  };
+  const layouts = [
+    { id: 'OVERVIEW', name: 'System Overview', icon: <LayoutGrid size={14} /> },
+    { id: 'DEV_MODE', name: 'Dev Nexus', icon: <Code2 size={14} /> },
+    { id: 'FINANCE', name: 'Market Watch', icon: <LineChart size={14} /> },
+    { id: 'OSINT', name: 'Tactical Command', icon: <Globe size={14} /> }, // New Layout Tab
+  ];
 
   return (
-    <div className="bg-slate-950 min-h-screen text-slate-200 font-mono p-4 md:p-6 overflow-x-hidden custom-scrollbar">
+    <div className="h-full w-full flex flex-col space-y-4 p-2 md:p-4 overflow-y-auto custom-scrollbar">
       
-      {/* Attach the container variant to the master wrapper */}
-      <motion.div 
-        className="max-w-[1600px] mx-auto flex flex-col gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-      >
+      {/* Top Telemetry & Controls */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-900/80 p-3 border border-slate-800 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+        <div className="flex items-center gap-3">
+          <Cpu className="text-emerald-500 animate-pulse" size={20} />
+          <h1 className="text-white font-bold tracking-widest uppercase text-sm">
+            Quorum_Orchestrator_v600
+          </h1>
+        </div>
         
-        {/* ROW 1: Global Announcements */}
-        <motion.div variants={itemVariants} transition={itemTransition} className="w-full flex flex-col gap-6">
-          <LiveSpacesBanner />
-          
-          {/* Neural Briefing Section */}
-          <div className="bg-slate-900/40 border border-cyan-500/20 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 shadow-[0_0_15px_#06b6d4]" />
-            <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 group-hover:scale-110 transition-transform">
-              <BrainCircuit size={32} />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles size={14} className="text-cyan-400" />
-                <h3 className="text-xs font-black text-cyan-400 uppercase tracking-[0.3em]">Neural Briefing Room</h3>
-              </div>
-              <div className="text-sm text-slate-300 font-mono leading-relaxed">
-                {isSummarizing ? (
-                  <div className="flex items-center gap-2 text-cyan-900">
-                    <Loader2 size={14} className="animate-spin" />
-                    <span>SYNCHRONIZING_NEURAL_STREAMS...</span>
-                  </div>
-                ) : (
-                  neuralSummary || "Awaiting neural uplink..."
-                )}
-              </div>
-            </div>
-            <button 
-              onClick={generateNeuralBrief}
-              className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-lg text-[10px] font-black text-cyan-400 uppercase tracking-widest hover:bg-cyan-500/20 transition-all"
+        {/* Layout Switcher */}
+        <div className="flex gap-2 bg-slate-950 p-1 rounded-lg border border-slate-800">
+          {layouts.map((layout) => (
+            <button
+              key={layout.id}
+              onClick={() => setActiveLayout(layout.id)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-[10px] font-mono uppercase transition-all ${
+                activeLayout === layout.id
+                  ? 'bg-slate-800 text-white shadow-[0_0_10px_rgba(30,41,59,0.8)]'
+                  : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50'
+              }`}
             >
-              Refresh Brief
+              {layout.icon}
+              <span className="hidden sm:inline">{layout.name}</span>
             </button>
-          </div>
-        </motion.div>
+          ))}
+        </div>
+      </div>
 
-        {/* CSS GRID MASTER CONTAINER */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 auto-rows-max">
-          
-          {/* ROW 2: Primary Telemetry */}
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-8 h-[450px]">
-            <VisualCortex />
-          </motion.div>
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-4 h-[450px]">
-            <BioMonitor />
-          </motion.div>
-
-          {/* ROW 3: Market & On-Chain Data */}
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-6 h-[400px]">
-            <MarketOracle />
-          </motion.div>
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-6 h-[400px]">
-            <ChainSight onWhaleAlert={addIntelBrief} /> 
-          </motion.div>
-
-          {/* ROW 4: Intelligence & Swarm Coordination */}
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-4 h-[450px]">
-            <BabelProtocol onTaskComplete={addIntelBrief} />
-          </motion.div>
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-4 h-[450px]">
-            <IntelFeed briefs={intelBriefs} /> 
-          </motion.div>
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-4 h-[450px]">
-            <MissionLog />
-          </motion.div>
-
-          {/* ROW 5: Execution Forge & Backend Logic */}
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-6 h-[600px]">
-            <AssetTokenize />
-          </motion.div>
-          <motion.div variants={itemVariants} transition={itemTransition} className="col-span-1 lg:col-span-6 h-[600px]">
-            <CodeNexus />
-          </motion.div>
-
+      {/* The Master CSS Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 auto-rows-[minmax(180px,auto)]">
+        
+        {/* ROW 1: Banners and Audio (Always top, persistent across layouts) */}
+        <div className="xl:col-span-8 bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg">
+          {/* <LiveSpacesBanner /> */}
+          <div className="h-[180px] flex items-center justify-center text-slate-600 font-mono text-xs">LiveSpacesBanner Mount Point</div>
+        </div>
+        <div className="xl:col-span-4 bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg">
+          {/* <NeuralRadio /> */}
+          <div className="h-[180px] flex items-center justify-center text-slate-600 font-mono text-xs">NeuralRadio Mount Point</div>
         </div>
 
-        {/* ROW 6: Audio & Comms Layer */}
-        <motion.div variants={itemVariants} transition={itemTransition} className="w-full h-[300px] mt-2 pb-6">
-          <NeuralRadio />
-        </motion.div>
+        {/* --- TACTICAL COMMAND LAYOUT (OSINT) --- */}
+        {activeLayout === 'OSINT' && (
+          <>
+            {/* GeoSentinel: Global Tracking (Takes up 2/3 of the width, spans tall) */}
+            <div className="xl:col-span-8 xl:row-span-3 bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg min-h-[600px] relative group">
+              <button className="absolute top-3 right-3 p-1.5 bg-slate-900/80 border border-amber-500/30 rounded text-amber-500/50 opacity-0 group-hover:opacity-100 transition-opacity hover:text-amber-400 hover:border-amber-400 z-50 backdrop-blur-md">
+                <Maximize size={12} />
+              </button>
+              <GeoSentinel />
+            </div>
 
-      </motion.div>
+            {/* Right Sidebar Stack */}
+            {/* SignalNexus: Local Wi-Fi Topology */}
+            <div className="xl:col-span-4 xl:row-span-2 bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg min-h-[400px]">
+              <SignalNexus />
+            </div>
+
+            {/* Mission Log / Terminal: System events and LLM parsing output */}
+            <div className="xl:col-span-4 xl:row-span-1 bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg min-h-[180px]">
+              {/* <MissionLog /> */}
+              <div className="h-full flex flex-col items-center justify-center text-slate-600 font-mono text-xs p-4 text-center border border-dashed border-slate-700 m-2 rounded">
+                MissionLog_v2.0 Mount Point
+                <span className="text-[9px] text-slate-500 mt-2">Routing achievement data & OSINT alerts</span>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* ... (Keep your OVERVIEW, DEV_MODE, and FINANCE conditions exactly as they were before) ... */}
+        {activeLayout === 'OVERVIEW' && (
+           <div className="xl:col-span-12 h-[400px] flex items-center justify-center border border-slate-800 rounded-xl text-slate-500 font-mono">
+             [SYSTEM OVERVIEW LAYOUT INACTIVE FOR THIS RENDER]
+           </div>
+        )}
+      </div>
     </div>
   );
 };

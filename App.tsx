@@ -74,7 +74,7 @@ import GeminiAudioLab from './components/GeminiAudioLab';
 import FootballBettingHub from './components/FootballBettingHub';
 import SportsOracle from './components/SportsOracle';
 import SignalNexus from './components/SignalNexus';
-import GeoVigilanceHub from './components/GeoVigilanceHub';
+import GeoSentinel from './components/GeoSentinel';
 import CommandPalette from './components/CommandPalette';
 import OperatorPresence from './components/OperatorPresence';
 import { NavSection } from './types';

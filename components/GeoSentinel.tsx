@@ -4,7 +4,7 @@ import {
   Globe, ShieldAlert, Activity, Map as MapIcon, 
   AlertTriangle, Radio, Eye, Zap, 
   Wind, CloudLightning, Waves, Flame,
-  Loader2, ExternalLink, Crosshair, Navigation
+  Loader2, ExternalLink, Crosshair, Navigation, X
 } from 'lucide-react';
 import useQuorumStore from './useQuorumStore';
 

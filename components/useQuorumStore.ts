@@ -72,7 +72,7 @@ const useQuorumStore = create<QuorumState>()(
 
       unlockAchievement: (text, xp) => set((state) => {
         const newLog: MissionLogEntry = {
-          id: Date.now(),
+          id: Date.now() + Math.random(), // Add random number for uniqueness
           type: 'ACHIEVEMENT',
           status: 'unlocked',
           text,
@@ -100,7 +100,7 @@ const useQuorumStore = create<QuorumState>()(
         let newLogs = state.missionLogs;
         if (!isMastered) {
           const log: MissionLogEntry = {
-            id: Date.now(),
+            id: Date.now() + Math.random(), // Add random number for uniqueness
             type: 'TASK',
             status: 'complete',
             text: `Skill Mastered: ${skillId.split('_').pop()}`,
