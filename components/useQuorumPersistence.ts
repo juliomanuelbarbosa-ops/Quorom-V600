@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const useQuorumPersistence = <T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] => {
   // 1. Initialize state with localStorage data or initialValue
@@ -7,7 +7,7 @@ const useQuorumPersistence = <T>(key: string, initialValue: T): [T, React.Dispat
       const item = window.localStorage.getItem(`QUORUM_V1_${key}`);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
-      console.error("CRITICAL_ERROR: Persistence Link Severed", error);
+      console.error('CRITICAL_ERROR: Persistence Link Severed', error);
       return initialValue;
     }
   });
@@ -17,7 +17,7 @@ const useQuorumPersistence = <T>(key: string, initialValue: T): [T, React.Dispat
     try {
       window.localStorage.setItem(`QUORUM_V1_${key}`, JSON.stringify(state));
     } catch (error) {
-      console.warn("QUORUM_WARNING: Storage limit approaching", error);
+      console.warn('QUORUM_WARNING: Storage limit approaching', error);
     }
   }, [key, state]);
 

@@ -33,6 +33,8 @@ export default [
         TextDecoder: "readonly",
         localStorage: "readonly",
         URL: "readonly",
+        btoa: "readonly",
+        atob: "readonly",
         Math: "readonly",
         Date: "readonly",
         Error: "readonly",

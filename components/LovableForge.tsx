@@ -1,27 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Heart, Code2, Rocket, Sparkles, ExternalLink, 
-  Zap, Cpu, Globe, Layout, Palette 
-} from 'lucide-react';
+import { Heart, Code2, Rocket, Sparkles, ExternalLink, Zap, Cpu, Globe, Layout, Palette } from 'lucide-react';
 
 const LovableForge: React.FC = () => {
   const capabilities = [
     {
-      title: "Rapid Prototyping",
-      desc: "Instant conversion of technical specs into functional UI nodes.",
-      icon: <Zap size={18} className="text-rose-400" />
+      title: 'Rapid Prototyping',
+      desc: 'Instant conversion of technical specs into functional UI nodes.',
+      icon: <Zap size={18} className="text-rose-400" />,
     },
     {
-      title: "Full-Stack Context",
-      desc: "Orchestrate front-end aesthetics with deep backend logic integration.",
-      icon: <Cpu size={18} className="text-cyan-400" />
+      title: 'Full-Stack Context',
+      desc: 'Orchestrate front-end aesthetics with deep backend logic integration.',
+      icon: <Cpu size={18} className="text-cyan-400" />,
     },
     {
-      title: "Aesthetic Alignment",
-      desc: "Neural design weights optimized for high-performance visual fidelity.",
-      icon: <Palette size={18} className="text-purple-400" />
-    }
+      title: 'Aesthetic Alignment',
+      desc: 'Neural design weights optimized for high-performance visual fidelity.',
+      icon: <Palette size={18} className="text-purple-400" />,
+    },
   ];
 
   return (
@@ -51,10 +48,10 @@ const LovableForge: React.FC = () => {
               <Code2 size={20} className="text-rose-500" />
               The Creative Mesh
             </h3>
-            
+
             <div className="space-y-6">
               {capabilities.map((c, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -76,7 +73,8 @@ const LovableForge: React.FC = () => {
           <div className="p-6 bg-rose-500/5 border border-rose-500/10 rounded-2xl flex items-start gap-4">
             <Sparkles className="text-rose-400 shrink-0" size={20} />
             <p className="text-[10px] text-rose-900 font-bold uppercase leading-relaxed tracking-wider">
-              Lovable operates at the edge of neural code generation, allowing developers to "love their code" again by offloading repetitive structural tasks to a high-intelligence substrate.
+              Lovable operates at the edge of neural code generation, allowing developers to &quot;love their code&quot; again by
+              offloading repetitive structural tasks to a high-intelligence substrate.
             </p>
           </div>
         </div>
@@ -87,23 +85,25 @@ const LovableForge: React.FC = () => {
               <div className="w-24 h-24 bg-rose-500/5 rounded-full flex items-center justify-center border border-rose-500/20 shadow-[0_0_80px_rgba(244,63,94,0.15)]">
                 <Rocket className="text-rose-500 w-12 h-12" />
               </div>
-              <motion.div 
+              <motion.div
                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                 transition={{ repeat: Infinity, duration: 3 }}
                 className="absolute inset-0 bg-rose-500 blur-2xl rounded-full -z-10"
               />
             </div>
-            
+
             <div className="space-y-4 max-w-sm px-8">
-              <h3 className="text-2xl font-black text-slate-100 uppercase tracking-widest leading-tight">Sync Mesh to Lovable Engine</h3>
+              <h3 className="text-2xl font-black text-slate-100 uppercase tracking-widest leading-tight">
+                Sync Mesh to Lovable Engine
+              </h3>
               <p className="text-[10px] text-rose-900 font-bold uppercase tracking-widest">
                 Prepare to offload component architecture to the global prototyping node.
               </p>
             </div>
 
-            <a 
-              href="https://lovable.dev" 
-              target="_blank" 
+            <a
+              href="https://lovable.dev"
+              target="_blank"
               rel="noopener noreferrer"
               className="group relative inline-flex items-center justify-center"
             >
@@ -128,25 +128,25 @@ const LovableForge: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
         <div className="glass-panel p-6 rounded-2xl border border-rose-500/10 flex items-center gap-4">
-           <Layout size={24} className="text-rose-900" />
-           <div>
-             <div className="text-[8px] text-rose-900 font-black uppercase">Assembly Speed</div>
-             <div className="text-xs font-black text-rose-500 uppercase">Sub-Minute Renders</div>
-           </div>
+          <Layout size={24} className="text-rose-900" />
+          <div>
+            <div className="text-[8px] text-rose-900 font-black uppercase">Assembly Speed</div>
+            <div className="text-xs font-black text-rose-500 uppercase">Sub-Minute Renders</div>
+          </div>
         </div>
         <div className="glass-panel p-6 rounded-2xl border border-rose-500/10 flex items-center gap-4">
-           <Globe size={24} className="text-rose-900" />
-           <div>
-             <div className="text-[8px] text-rose-900 font-black uppercase">Deployment</div>
-             <div className="text-xs font-black text-rose-500 uppercase">Netlify/Vercel Ready</div>
-           </div>
+          <Globe size={24} className="text-rose-900" />
+          <div>
+            <div className="text-[8px] text-rose-900 font-black uppercase">Deployment</div>
+            <div className="text-xs font-black text-rose-500 uppercase">Netlify/Vercel Ready</div>
+          </div>
         </div>
         <div className="glass-panel p-6 rounded-2xl border border-rose-500/10 flex items-center gap-4">
-           <Heart size={24} className="text-rose-900" />
-           <div>
-             <div className="text-[8px] text-rose-900 font-black uppercase">Developer Sat</div>
-             <div className="text-xs font-black text-rose-500 uppercase">Maximum Entropy</div>
-           </div>
+          <Heart size={24} className="text-rose-900" />
+          <div>
+            <div className="text-[8px] text-rose-900 font-black uppercase">Developer Sat</div>
+            <div className="text-xs font-black text-rose-500 uppercase">Maximum Entropy</div>
+          </div>
         </div>
       </div>
     </div>

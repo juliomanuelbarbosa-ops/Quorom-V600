@@ -1,8 +1,8 @@
-
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stars, Float, Text, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import useQuorumStore from './useQuorumStore';
 
 interface OrbProps {
   position: [number, number, number];
@@ -79,41 +79,31 @@ const GrokNexus: React.FC = () => {
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} color="#06b6d4" intensity={2} />
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        
-        <NavOrb 
-          position={[-3, 2, 0]} 
-          color="#06b6d4" 
-          label="AI NEXUS" 
-          onClick={() => onNavigate('tensorflow-playground')} 
+
+        <NavOrb
+          position={[-3, 2, 0]}
+          color="#06b6d4"
+          label="AI NEXUS"
+          onClick={() => onNavigate('tensorflow-playground')}
         />
-        <NavOrb 
-          position={[3, 2, 0]} 
-          color="#8b5cf6" 
-          label="SOVEREIGN WALLET" 
-          onClick={() => onNavigate('wallet-connector')} 
+        <NavOrb
+          position={[3, 2, 0]}
+          color="#8b5cf6"
+          label="SOVEREIGN WALLET"
+          onClick={() => onNavigate('wallet-connector')}
         />
-        <NavOrb 
-          position={[-3, -2, 0]} 
-          color="#ec4899" 
-          label="DEV TOOLS" 
-          onClick={() => onNavigate('github-api')} 
-        />
-        <NavOrb 
-          position={[3, -2, 0]} 
-          color="#10b981" 
-          label="AI DIRECTORY" 
-          onClick={() => onNavigate('ai-tools-directory')} 
+        <NavOrb position={[-3, -2, 0]} color="#ec4899" label="DEV TOOLS" onClick={() => onNavigate('github-api')} />
+        <NavOrb
+          position={[3, -2, 0]}
+          color="#10b981"
+          label="AI DIRECTORY"
+          onClick={() => onNavigate('ai-tools-directory')}
         />
 
         {/* Central Core */}
         <mesh>
           <icosahedronGeometry args={[1.5, 15]} />
-          <meshStandardMaterial 
-            color="#06b6d4" 
-            wireframe 
-            transparent 
-            opacity={0.1}
-          />
+          <meshStandardMaterial color="#06b6d4" wireframe transparent opacity={0.1} />
         </mesh>
 
         <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />

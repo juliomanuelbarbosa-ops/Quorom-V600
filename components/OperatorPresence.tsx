@@ -20,16 +20,25 @@ const OperatorPresence: React.FC = () => {
                 <div className="w-8 h-8 rounded-lg bg-slate-800 border border-cyan-500/10 flex items-center justify-center text-[10px] font-bold text-cyan-900 group-hover:border-cyan-500/30 transition-all">
                   {op.name.substring(0, 2)}
                 </div>
-                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${
-                  op.status === 'online' ? 'bg-green-500' : op.status === 'away' ? 'bg-amber-500' : 'bg-slate-600'
-                }`} />
+                <div
+                  className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${
+                    op.status === 'online' ? 'bg-green-500' : op.status === 'away' ? 'bg-amber-500' : 'bg-slate-600'
+                  }`}
+                />
               </div>
               <div>
-                <div className="text-[10px] font-bold text-slate-200 group-hover:text-cyan-400 transition-colors uppercase tracking-tight">{op.name}</div>
-                <div className="text-[8px] text-slate-500 font-bold uppercase tracking-tighter">{op.status} // {op.lastSeen}</div>
+                <div className="text-[10px] font-bold text-slate-200 group-hover:text-cyan-400 transition-colors uppercase tracking-tight">
+                  {op.name}
+                </div>
+                <div className="text-[8px] text-slate-500 font-bold uppercase tracking-tighter">
+                  {op.status} {'//'} {op.lastSeen}
+                </div>
               </div>
             </div>
-            <Circle size={8} className={`transition-colors ${op.status === 'online' ? 'text-green-500 fill-green-500' : 'text-slate-800'}`} />
+            <Circle
+              size={8}
+              className={`transition-colors ${op.status === 'online' ? 'text-green-500 fill-green-500' : 'text-slate-800'}`}
+            />
           </div>
         ))}
       </div>

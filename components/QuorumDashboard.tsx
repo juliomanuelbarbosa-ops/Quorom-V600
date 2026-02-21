@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import BabelProtocol from './BabelProtocol';
 import IntelFeed from './IntelFeed';
-import { IntelBrief } from './useQuorumStore';
+import useQuorumStore, { IntelBrief } from './useQuorumStore';
 import MarketOracle from './MarketOracle';
 import ChainSight from './ChainSight';
 import AssetTokenize from './AssetTokenize';
@@ -13,9 +13,12 @@ const QuorumDashboard: React.FC = () => {
   const { intelBriefs, addIntelBrief } = useQuorumStore();
 
   // Handler passed to BabelProtocol to inject new intel
-  const handleNewIntel = useCallback((newBrief: IntelBrief) => {
-    addIntelBrief(newBrief);
-  }, [addIntelBrief]);
+  const handleNewIntel = useCallback(
+    (newBrief: IntelBrief) => {
+      addIntelBrief(newBrief);
+    },
+    [addIntelBrief]
+  );
 
   return (
     <div className="bg-slate-950 h-full font-mono text-slate-200 flex flex-col overflow-hidden">

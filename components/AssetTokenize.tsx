@@ -9,7 +9,7 @@ const AssetTokenize = () => {
   const [mintProgress, setMintProgress] = useState(0);
   const [deployedAssets, setDeployedAssets] = useState([
     { id: 'RWA-091', name: 'Tokyo Data Center', fractions: '50k', value: '$12M', status: 'Active' },
-    { id: 'RWA-088', name: 'Gold Bullion Vault 4', fractions: '10k', value: '$2.5M', status: 'Locked' }
+    { id: 'RWA-088', name: 'Gold Bullion Vault 4', fractions: '10k', value: '$2.5M', status: 'Locked' },
   ]);
 
   const handleTokenize = (e: React.FormEvent) => {
@@ -23,13 +23,18 @@ const AssetTokenize = () => {
         if (prev >= 100) {
           clearInterval(interval);
           setIsMinting(false);
-          setDeployedAssets([{
-            id: `RWA-${Math.floor(Math.random() * 900) + 100}`,
-            name: assetName,
-            fractions: `${(parseInt(fractions) / 1000).toFixed(0)}k`,
-            value: `$${(parseInt(assetValue) / 1000000).toFixed(1)}M`,
-            status: 'Active'
-          }, ...deployedAssets].slice(0, 4));
+          setDeployedAssets(
+            [
+              {
+                id: `RWA-${Math.floor(Math.random() * 900) + 100}`,
+                name: assetName,
+                fractions: `${(parseInt(fractions) / 1000).toFixed(0)}k`,
+                value: `$${(parseInt(assetValue) / 1000000).toFixed(1)}M`,
+                status: 'Active',
+              },
+              ...deployedAssets,
+            ].slice(0, 4)
+          );
           return 100;
         }
         return prev + 2; // Progress speed
@@ -58,24 +63,26 @@ const AssetTokenize = () => {
             <Lock className="w-4 h-4" />
             RWA SMART CONTRACT DEPLOYMENT
           </div>
-          
+
           <form onSubmit={handleTokenize} className="space-y-4 flex-1">
             <div>
-              <label className="block text-[10px] text-slate-400 mb-1">ASSET DESIGNATION</label>
-              <input 
-                type="text" 
+              <label htmlFor="asset-designation" className="block text-[10px] text-slate-400 mb-1">ASSET DESIGNATION</label>
+              <input
+                id="asset-designation"
+                type="text"
                 value={assetName}
                 onChange={(e) => setAssetName(e.target.value)}
                 disabled={isMinting}
                 className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors disabled:opacity-50"
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[10px] text-slate-400 mb-1">TOTAL VALUATION (USD)</label>
-                <input 
-                  type="number" 
+                <label htmlFor="total-valuation" className="block text-[10px] text-slate-400 mb-1">TOTAL VALUATION (USD)</label>
+                <input
+                  id="total-valuation"
+                  type="number"
                   value={assetValue}
                   onChange={(e) => setAssetValue(e.target.value)}
                   disabled={isMinting}
@@ -83,9 +90,10 @@ const AssetTokenize = () => {
                 />
               </div>
               <div>
-                <label className="block text-[10px] text-slate-400 mb-1">FRACTIONAL SUPPLY</label>
-                <input 
-                  type="number" 
+                <label htmlFor="fractional-supply" className="block text-[10px] text-slate-400 mb-1">FRACTIONAL SUPPLY</label>
+                <input
+                  id="fractional-supply"
+                  type="number"
                   value={fractions}
                   onChange={(e) => setFractions(e.target.value)}
                   disabled={isMinting}
@@ -94,12 +102,12 @@ const AssetTokenize = () => {
               </div>
             </div>
 
-            <button 
+            <button
               type="submit"
               disabled={isMinting}
               className={`w-full mt-4 py-3 rounded-lg font-bold text-sm tracking-widest transition-all ${
-                isMinting 
-                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
+                isMinting
+                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
                   : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)]'
               }`}
             >
@@ -115,13 +123,17 @@ const AssetTokenize = () => {
                 <span>{mintProgress}%</span>
               </div>
               <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-                <div 
+                <div
                   className="h-full bg-emerald-500 transition-all duration-75 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                   style={{ width: `${mintProgress}%` }}
                 ></div>
               </div>
               <div className="text-[10px] text-emerald-500/70 mt-2 text-center animate-pulse">
-                {mintProgress < 30 ? 'Compiling Solidity ABIs...' : mintProgress < 70 ? 'Generating cryptographic proofs...' : 'Broadcasting to network...'}
+                {mintProgress < 30
+                  ? 'Compiling Solidity ABIs...'
+                  : mintProgress < 70
+                    ? 'Generating cryptographic proofs...'
+                    : 'Broadcasting to network...'}
               </div>
             </div>
           )}
@@ -133,10 +145,13 @@ const AssetTokenize = () => {
             <Fingerprint className="w-4 h-4" />
             IMMUTABLE LEDGER REGISTRY
           </div>
-          
+
           <div className="space-y-3">
             {deployedAssets.map((asset) => (
-              <div key={asset.id} className="bg-slate-900 border border-slate-800 p-3 rounded-lg flex items-center justify-between group hover:border-slate-600 transition-colors">
+              <div
+                key={asset.id}
+                className="bg-slate-900 border border-slate-800 p-3 rounded-lg flex items-center justify-between group hover:border-slate-600 transition-colors"
+              >
                 <div>
                   <div className="text-sm font-bold text-slate-200">{asset.name}</div>
                   <div className="text-xs text-slate-500 flex gap-2 mt-1">
@@ -153,7 +168,9 @@ const AssetTokenize = () => {
                     ) : (
                       <AlertCircle className="w-3 h-3 text-slate-500" />
                     )}
-                    <span className={`text-[10px] uppercase ${asset.status === 'Active' ? 'text-cyan-400' : 'text-slate-500'}`}>
+                    <span
+                      className={`text-[10px] uppercase ${asset.status === 'Active' ? 'text-cyan-400' : 'text-slate-500'}`}
+                    >
                       {asset.status}
                     </span>
                   </div>

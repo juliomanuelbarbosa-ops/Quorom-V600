@@ -1,11 +1,22 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI } from "@google/genai";
-import { 
-  Image as ImageIcon, Wand2, Sliders, Zap, Download, 
-  Trash2, Loader2, ExternalLink, Star, Shield, 
-  Layers, Maximize2, Sparkles, AlertCircle, Cpu
+import { GoogleGenAI } from '@google/genai';
+import {
+  Image as ImageIcon,
+  Wand2,
+  Sliders,
+  Zap,
+  Download,
+  Trash2,
+  Loader2,
+  ExternalLink,
+  Star,
+  Shield,
+  Layers,
+  Maximize2,
+  Sparkles,
+  AlertCircle,
+  Cpu,
 } from 'lucide-react';
 
 const StableDiffusionForge: React.FC = () => {
@@ -29,7 +40,7 @@ const StableDiffusionForge: React.FC = () => {
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const fullPrompt = `${prompt} ${negativePrompt ? `(Negative: ${negativePrompt})` : ''}`;
-      
+
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: {
@@ -37,9 +48,9 @@ const StableDiffusionForge: React.FC = () => {
         },
         config: {
           imageConfig: {
-            aspectRatio: aspectRatio
-          }
-        }
+            aspectRatio: aspectRatio,
+          },
+        },
       });
 
       // Search for the image part in the response
@@ -61,11 +72,11 @@ const StableDiffusionForge: React.FC = () => {
       if (imageUrl) {
         setGeneratedImage(imageUrl);
       } else {
-        throw new Error("LATENT_COLLAPSE: Image data not found in neural stream.");
+        throw new Error('LATENT_COLLAPSE: Image data not found in neural stream.');
       }
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "NEURAL_INTERRUPT: Synthesis failed.");
+      setError(err.message || 'NEURAL_INTERRUPT: Synthesis failed.');
     } finally {
       setIsGenerating(false);
     }
@@ -88,7 +99,12 @@ const StableDiffusionForge: React.FC = () => {
             <Star size={12} className="text-cyan-500" />
             <span className="text-[10px] font-black text-cyan-400 uppercase">135K STABLE</span>
           </div>
-          <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" rel="noopener noreferrer" className="text-cyan-900 hover:text-cyan-400 transition-colors">
+          <a
+            href="https://github.com/AUTOMATIC1111/stable-diffusion-webui"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-900 hover:text-cyan-400 transition-colors"
+          >
             <ExternalLink size={18} />
           </a>
         </div>
@@ -99,11 +115,11 @@ const StableDiffusionForge: React.FC = () => {
         <div className="lg:col-span-4 space-y-4 overflow-y-auto custom-scrollbar pr-2">
           <div className="glass-panel p-5 rounded-2xl border border-cyan-500/20 space-y-4">
             <div className="space-y-2">
-              <label className="text-[9px] text-cyan-900 font-black uppercase tracking-widest flex justify-between">
+              <label htmlFor="checkpoint-select" className="text-[9px] text-cyan-900 font-black uppercase tracking-widest flex justify-between">
                 <span>Checkpoint Substrate</span>
                 <span className="text-cyan-500">v1.5-PRUNED-EMAONLY</span>
               </label>
-              <select className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg p-2 text-cyan-400 text-[10px] font-bold outline-none focus:border-cyan-500">
+              <select id="checkpoint-select" className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg p-2 text-cyan-400 text-[10px] font-bold outline-none focus:border-cyan-500">
                 <option>Quorum-Sovereign-v2.safetensors</option>
                 <option>Dreamshaper_v8_Mesh.ckpt</option>
                 <option>Realistic_Vision_V6.0</option>
@@ -112,10 +128,11 @@ const StableDiffusionForge: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[9px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
+              <label htmlFor="positive-prompt" className="text-[9px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
                 <ImageIcon size={10} /> Positive Prompt
               </label>
-              <textarea 
+              <textarea
+                id="positive-prompt"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Describe the visual manifest..."
@@ -124,10 +141,11 @@ const StableDiffusionForge: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[9px] text-red-900 font-black uppercase tracking-widest flex items-center gap-2">
+              <label htmlFor="negative-prompt" className="text-[9px] text-red-900 font-black uppercase tracking-widest flex items-center gap-2">
                 <AlertCircle size={10} /> Negative Prompt
               </label>
-              <textarea 
+              <textarea
+                id="negative-prompt"
                 value={negativePrompt}
                 onChange={(e) => setNegativePrompt(e.target.value)}
                 placeholder="Elements to exclude from the latent cloud..."
@@ -140,14 +158,21 @@ const StableDiffusionForge: React.FC = () => {
             <h3 className="text-[10px] font-black text-cyan-600 uppercase tracking-widest flex items-center gap-2">
               <Sliders size={12} /> Sampling Parameters
             </h3>
-            
+
             <div className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between text-[9px] font-black text-cyan-900 uppercase">
                   <span>Sampling Steps</span>
                   <span className="text-cyan-400">{steps}</span>
                 </div>
-                <input type="range" min="1" max="50" value={steps} onChange={(e) => setSteps(Number(e.target.value))} className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500" />
+                <input
+                  type="range"
+                  min="1"
+                  max="50"
+                  value={steps}
+                  onChange={(e) => setSteps(Number(e.target.value))}
+                  className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                />
               </div>
 
               <div className="space-y-2">
@@ -155,15 +180,23 @@ const StableDiffusionForge: React.FC = () => {
                   <span>CFG Scale</span>
                   <span className="text-cyan-400">{cfgScale}</span>
                 </div>
-                <input type="range" min="1" max="20" step="0.5" value={cfgScale} onChange={(e) => setCfgScale(Number(e.target.value))} className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500" />
+                <input
+                  type="range"
+                  min="1"
+                  max="20"
+                  step="0.5"
+                  value={cfgScale}
+                  onChange={(e) => setCfgScale(Number(e.target.value))}
+                  className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                />
               </div>
 
               <div className="space-y-4 pt-2">
                 <div className="space-y-2">
                   <span className="text-[8px] text-cyan-800 uppercase font-black">Aspect Ratio</span>
                   <div className="grid grid-cols-3 gap-2">
-                    {(['1:1', '16:9', '9:16'] as const).map(ratio => (
-                      <button 
+                    {(['1:1', '16:9', '9:16'] as const).map((ratio) => (
+                      <button
                         key={ratio}
                         onClick={() => setAspectRatio(ratio)}
                         className={`py-2 rounded text-[9px] font-black uppercase transition-all border ${aspectRatio === ratio ? 'bg-cyan-500 text-slate-950 border-cyan-400' : 'bg-slate-900 text-cyan-900 border-cyan-500/10 hover:border-cyan-500/30'}`}
@@ -180,13 +213,13 @@ const StableDiffusionForge: React.FC = () => {
                     <span className="text-[8px] text-cyan-800 uppercase font-black">Compute Engine Acceleration</span>
                   </div>
                   <div className="flex rounded-lg overflow-hidden border border-cyan-500/20">
-                    <button 
+                    <button
                       onClick={() => setAcceleration('CPU')}
                       className={`flex-1 py-2 text-[9px] font-black uppercase transition-all ${acceleration === 'CPU' ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-900 text-cyan-800 hover:text-cyan-400'}`}
                     >
                       CPU Core
                     </button>
-                    <button 
+                    <button
                       onClick={() => setAcceleration('WebGPU')}
                       className={`flex-1 py-2 text-[9px] font-black uppercase transition-all ${acceleration === 'WebGPU' ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]' : 'bg-slate-900 text-cyan-800 hover:text-cyan-400'}`}
                     >
@@ -198,11 +231,13 @@ const StableDiffusionForge: React.FC = () => {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={generateImage}
             disabled={isGenerating || !prompt.trim()}
             className={`w-full py-4 rounded-xl font-black text-xs tracking-[0.4em] transition-all uppercase flex items-center justify-center gap-3 ${
-              isGenerating ? 'bg-slate-800 text-cyan-900 cursor-not-allowed' : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/30'
+              isGenerating
+                ? 'bg-slate-800 text-cyan-900 cursor-not-allowed'
+                : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/30'
             }`}
           >
             {isGenerating ? <Loader2 className="animate-spin" size={18} /> : <Wand2 size={18} />}
@@ -215,7 +250,7 @@ const StableDiffusionForge: React.FC = () => {
           <div className="glass-panel flex-1 rounded-3xl border border-cyan-500/20 bg-slate-950/40 relative overflow-hidden flex items-center justify-center group">
             <AnimatePresence mode="wait">
               {isGenerating ? (
-                <motion.div 
+                <motion.div
                   key="generating"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -223,64 +258,74 @@ const StableDiffusionForge: React.FC = () => {
                   className="flex flex-col items-center gap-6"
                 >
                   <div className="relative w-40 h-40">
-                    <motion.div 
+                    <motion.div
                       animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                       className="absolute inset-0 border-b-2 border-cyan-500 rounded-full blur-[2px]"
                     />
-                    <motion.div 
+                    <motion.div
                       animate={{ rotate: -360 }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                      transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
                       className="absolute inset-6 border-t-2 border-purple-500 rounded-full opacity-50"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
-                       <Zap className="text-cyan-500 animate-pulse" size={48} />
+                      <Zap className="text-cyan-500 animate-pulse" size={48} />
                     </div>
                   </div>
                   <div className="text-center space-y-1">
-                    <p className="text-[10px] text-cyan-500 font-black uppercase tracking-[0.5em]">Scanning Latent Matrix</p>
-                    <p className="text-[8px] text-cyan-900 font-bold uppercase">Node Compute: {acceleration === 'WebGPU' ? 'WebGPU' : 'CPU'} Load</p>
+                    <p className="text-[10px] text-cyan-500 font-black uppercase tracking-[0.5em]">
+                      Scanning Latent Matrix
+                    </p>
+                    <p className="text-[8px] text-cyan-900 font-bold uppercase">
+                      Node Compute: {acceleration === 'WebGPU' ? 'WebGPU' : 'CPU'} Load
+                    </p>
                   </div>
                 </motion.div>
               ) : generatedImage ? (
-                <motion.div 
+                <motion.div
                   key="output"
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="w-full h-full p-4 flex flex-col"
                 >
                   <div className="relative flex-1 rounded-2xl overflow-hidden border border-cyan-500/30 bg-slate-900 group">
-                    <img 
-                      src={generatedImage} 
-                      alt="Generated Asset" 
-                      className="w-full h-full object-contain"
-                    />
+                    <img src={generatedImage} alt="Generated Asset" className="w-full h-full object-contain" />
                     <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                    
+
                     <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                       <button onClick={() => window.open(generatedImage, '_blank')} className="p-2 bg-slate-950/80 hover:bg-cyan-500 hover:text-slate-950 rounded-lg text-cyan-400 border border-cyan-500/20">
-                         <Maximize2 size={16} />
-                       </button>
-                       <a href={generatedImage} download="quorum-diffusion.png" className="p-2 bg-slate-950/80 hover:bg-cyan-500 hover:text-slate-950 rounded-lg text-cyan-400 border border-cyan-500/20">
-                         <Download size={16} />
-                       </a>
+                      <button
+                        onClick={() => window.open(generatedImage, '_blank')}
+                        className="p-2 bg-slate-950/80 hover:bg-cyan-500 hover:text-slate-950 rounded-lg text-cyan-400 border border-cyan-500/20"
+                      >
+                        <Maximize2 size={16} />
+                      </button>
+                      <a
+                        href={generatedImage}
+                        download="quorum-diffusion.png"
+                        className="p-2 bg-slate-950/80 hover:bg-cyan-500 hover:text-slate-950 rounded-lg text-cyan-400 border border-cyan-500/20"
+                      >
+                        <Download size={16} />
+                      </a>
                     </div>
                   </div>
                   <div className="mt-4 flex justify-between items-center px-2">
-                     <div className="flex items-center gap-3">
-                        <div className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/20 rounded text-[8px] font-black text-cyan-500 uppercase tracking-widest">
-                          Seed: {Math.floor(Math.random() * 1000000000)}
-                        </div>
-                        <div className="px-2 py-0.5 bg-slate-900 border border-cyan-500/10 rounded text-[8px] font-black text-cyan-900 uppercase tracking-widest">
-                          Steps: {steps}
-                        </div>
-                        <div className="px-2 py-0.5 bg-slate-950/50 border border-cyan-500/5 rounded text-[8px] font-black text-cyan-800 uppercase tracking-widest italic">
-                          Eng: {acceleration}
-                        </div>
-                     </div>
-                     <button onClick={() => setGeneratedImage(null)} className="text-red-900 hover:text-red-500 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest transition-colors">
-                       <Trash2 size={14} /> <span>Wipe Buffer</span>
-                     </button>
+                    <div className="flex items-center gap-3">
+                      <div className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/20 rounded text-[8px] font-black text-cyan-500 uppercase tracking-widest">
+                        Seed: {Math.floor(Math.random() * 1000000000)}
+                      </div>
+                      <div className="px-2 py-0.5 bg-slate-900 border border-cyan-500/10 rounded text-[8px] font-black text-cyan-900 uppercase tracking-widest">
+                        Steps: {steps}
+                      </div>
+                      <div className="px-2 py-0.5 bg-slate-950/50 border border-cyan-500/5 rounded text-[8px] font-black text-cyan-800 uppercase tracking-widest italic">
+                        Eng: {acceleration}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setGeneratedImage(null)}
+                      className="text-red-900 hover:text-red-500 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest transition-colors"
+                    >
+                      <Trash2 size={14} /> <span>Wipe Buffer</span>
+                    </button>
                   </div>
                 </motion.div>
               ) : (
@@ -288,7 +333,9 @@ const StableDiffusionForge: React.FC = () => {
                   <div className="w-32 h-32 bg-cyan-500/5 rounded-full flex items-center justify-center border border-cyan-500/20">
                     <ImageIcon size={64} className="text-cyan-900" />
                   </div>
-                  <p className="text-xs uppercase tracking-[0.4em] font-black text-cyan-900">Output Buffer: Awaiting Latent Signal</p>
+                  <p className="text-xs uppercase tracking-[0.4em] font-black text-cyan-900">
+                    Output Buffer: Awaiting Latent Signal
+                  </p>
                 </div>
               )}
             </AnimatePresence>
@@ -305,25 +352,31 @@ const StableDiffusionForge: React.FC = () => {
 
           <div className="grid grid-cols-3 gap-4">
             <div className="glass-panel p-4 rounded-2xl border border-cyan-500/10 flex items-center gap-3">
-               <Shield size={16} className="text-cyan-900" />
-               <div>
-                  <div className="text-[8px] text-cyan-900 font-black uppercase">Integrity</div>
-                  <div className="text-[10px] font-bold text-cyan-400">SECURE</div>
-               </div>
+              <Shield size={16} className="text-cyan-900" />
+              <div>
+                <div className="text-[8px] text-cyan-900 font-black uppercase">Integrity</div>
+                <div className="text-[10px] font-bold text-cyan-400">SECURE</div>
+              </div>
             </div>
             <div className="glass-panel p-4 rounded-2xl border border-cyan-500/10 flex items-center gap-3">
-               <Layers size={16} className="text-cyan-900" />
-               <div>
-                  <div className="text-[8px] text-cyan-900 font-black uppercase">VRAM Usage</div>
-                  <div className="text-[10px] font-bold text-cyan-400">{acceleration === 'WebGPU' ? '8.4 GB' : '0.5 GB (SWAP)'}</div>
-               </div>
+              <Layers size={16} className="text-cyan-900" />
+              <div>
+                <div className="text-[8px] text-cyan-900 font-black uppercase">VRAM Usage</div>
+                <div className="text-[10px] font-bold text-cyan-400">
+                  {acceleration === 'WebGPU' ? '8.4 GB' : '0.5 GB (SWAP)'}
+                </div>
+              </div>
             </div>
             <div className="glass-panel p-4 rounded-2xl border border-cyan-500/10 flex items-center gap-3">
-               <Zap size={16} className="text-cyan-900" />
-               <div>
-                  <div className="text-[8px] text-cyan-900 font-black uppercase">Engine</div>
-                  <div className={`text-[10px] font-bold ${acceleration === 'WebGPU' ? 'text-cyan-400' : 'text-amber-500'}`}>{acceleration}</div>
-               </div>
+              <Zap size={16} className="text-cyan-900" />
+              <div>
+                <div className="text-[8px] text-cyan-900 font-black uppercase">Engine</div>
+                <div
+                  className={`text-[10px] font-bold ${acceleration === 'WebGPU' ? 'text-cyan-400' : 'text-amber-500'}`}
+                >
+                  {acceleration}
+                </div>
+              </div>
             </div>
           </div>
         </div>

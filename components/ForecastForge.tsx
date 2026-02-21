@@ -1,9 +1,16 @@
-
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BarChart3, TrendingUp, Zap, Info, Loader2, 
-  Activity, Target, Clock, ShieldCheck, RefreshCcw
+import {
+  BarChart3,
+  TrendingUp,
+  Zap,
+  Info,
+  Loader2,
+  Activity,
+  Target,
+  Clock,
+  ShieldCheck,
+  RefreshCcw,
 } from 'lucide-react';
 
 const ForecastForge: React.FC = () => {
@@ -15,7 +22,7 @@ const ForecastForge: React.FC = () => {
   const runProjection = () => {
     setIsProjecting(true);
     setResult(null);
-    
+
     // Simulate complex neural projection
     setTimeout(() => {
       const data = Array.from({ length: scope }, (_, i) => {
@@ -56,33 +63,43 @@ const ForecastForge: React.FC = () => {
           <div className="glass-panel p-6 rounded-2xl border border-cyan-500/20 space-y-8">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <label className="text-[10px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
+                <label htmlFor="temporal-scope" className="text-[10px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
                   <Clock size={12} /> Temporal Scope
                 </label>
                 <span className="text-cyan-400 font-mono text-xs">{scope} Cycles</span>
               </div>
-              <input 
-                type="range" min="10" max="100" step="10" 
-                value={scope} onChange={(e) => setScope(parseInt(e.target.value))}
+              <input
+                id="temporal-scope"
+                type="range"
+                min="10"
+                max="100"
+                step="10"
+                value={scope}
+                onChange={(e) => setScope(parseInt(e.target.value))}
                 className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
               />
             </div>
 
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <label className="text-[10px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
+                <label htmlFor="confidence-input" className="text-[10px] text-cyan-900 font-black uppercase tracking-widest flex items-center gap-2">
                   <Target size={12} /> Confidence
                 </label>
                 <span className="text-cyan-400 font-mono text-xs">{confidence}%</span>
               </div>
-              <input 
-                type="range" min="50" max="99" step="1" 
-                value={confidence} onChange={(e) => setConfidence(parseInt(e.target.value))}
+              <input
+                id="confidence-input"
+                type="range"
+                min="50"
+                max="99"
+                step="1"
+                value={confidence}
+                onChange={(e) => setConfidence(parseInt(e.target.value))}
                 className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
               />
             </div>
 
-            <button 
+            <button
               onClick={runProjection}
               disabled={isProjecting}
               className="w-full bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-800 text-slate-950 py-4 rounded-xl font-black text-xs tracking-[0.3em] transition-all uppercase shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2"
@@ -97,7 +114,8 @@ const ForecastForge: React.FC = () => {
               <Info size={14} /> Methodology
             </h3>
             <p className="text-[9px] text-cyan-900 font-bold uppercase leading-relaxed tracking-wider">
-              Calculates outcome variance across N-dimensional neural paths using weighted probability distribution. Optimal for market volatility or systemic risk assessment.
+              Calculates outcome variance across N-dimensional neural paths using weighted probability distribution.
+              Optimal for market volatility or systemic risk assessment.
             </p>
           </div>
         </div>
@@ -107,48 +125,58 @@ const ForecastForge: React.FC = () => {
           <div className="glass-panel p-8 rounded-2xl border border-cyan-500/20 min-h-[500px] flex flex-col relative overflow-hidden">
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
               <div className="w-full h-full border-b border-cyan-500/20 flex flex-col justify-between">
-                {[...Array(10)].map((_, i) => <div key={i} className="w-full h-px bg-cyan-500/10" />)}
+                {[...Array(10)].map((_, i) => (
+                  <div key={i} className="w-full h-px bg-cyan-500/10" />
+                ))}
               </div>
             </div>
 
             <div className="flex justify-between items-center mb-12 relative z-10">
               <div className="flex items-center gap-2">
                 <Activity size={18} className="text-cyan-500" />
-                <h3 className="text-xs font-black text-cyan-400 tracking-widest uppercase">Neural Probability Matrix</h3>
+                <h3 className="text-xs font-black text-cyan-400 tracking-widest uppercase">
+                  Neural Probability Matrix
+                </h3>
               </div>
               <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-cyan-900">
-                <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-cyan-500" /> Projected</div>
-                <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-cyan-500/20" /> Variance</div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-cyan-500" /> Projected
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-cyan-500/20" /> Variance
+                </div>
               </div>
             </div>
 
             <div className="flex-1 flex items-end justify-between gap-1 relative z-10 h-[300px]">
               <AnimatePresence mode="wait">
                 {isProjecting ? (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="absolute inset-0 flex flex-col items-center justify-center gap-4"
                   >
                     <div className="relative w-24 h-24">
-                      <motion.div 
+                      <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                         className="absolute inset-0 border-t-2 border-cyan-500 rounded-full"
                       />
-                      <motion.div 
+                      <motion.div
                         animate={{ rotate: -360 }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
                         className="absolute inset-4 border-b-2 border-purple-500 rounded-full"
                       />
                     </div>
-                    <span className="text-[10px] text-cyan-500 font-black uppercase tracking-[0.5em]">Projecting Paths...</span>
+                    <span className="text-[10px] text-cyan-500 font-black uppercase tracking-[0.5em]">
+                      Projecting Paths...
+                    </span>
                   </motion.div>
                 ) : result ? (
                   <div className="w-full h-full flex items-end justify-between gap-1">
                     {result.map((val, i) => (
-                      <motion.div 
+                      <motion.div
                         key={i}
                         initial={{ height: 0 }}
                         animate={{ height: `${val}%` }}
@@ -156,9 +184,9 @@ const ForecastForge: React.FC = () => {
                         className="group relative flex-1"
                       >
                         {/* Probability variance cloud */}
-                        <div 
+                        <div
                           className="absolute bottom-0 w-full bg-cyan-500/10 group-hover:bg-cyan-500/20 transition-all rounded-t-sm"
-                          style={{ height: `${val + (100-confidence)}%` }}
+                          style={{ height: `${val + (100 - confidence)}%` }}
                         />
                         {/* Main projection line */}
                         <div className="absolute bottom-0 w-full bg-cyan-500 rounded-t-sm h-full shadow-[0_0_15px_rgba(6,182,212,0.3)]" />
@@ -168,7 +196,9 @@ const ForecastForge: React.FC = () => {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-20">
                     <TrendingUp size={64} className="text-cyan-900" />
-                    <p className="text-xs uppercase tracking-[0.4em] font-black text-cyan-900">Initiate signal for projection</p>
+                    <p className="text-xs uppercase tracking-[0.4em] font-black text-cyan-900">
+                      Initiate signal for projection
+                    </p>
                   </div>
                 )}
               </AnimatePresence>
@@ -177,7 +207,9 @@ const ForecastForge: React.FC = () => {
             <div className="mt-8 grid grid-cols-3 gap-6 pt-8 border-t border-cyan-500/10 relative z-10">
               <div className="space-y-1">
                 <span className="text-[8px] text-cyan-900 font-black uppercase tracking-widest">Mean Divergence</span>
-                <div className="text-xl font-black text-slate-100">{result ? (Math.random() * 2.5).toFixed(2) : '--'}%</div>
+                <div className="text-xl font-black text-slate-100">
+                  {result ? (Math.random() * 2.5).toFixed(2) : '--'}%
+                </div>
               </div>
               <div className="space-y-1">
                 <span className="text-[8px] text-cyan-900 font-black uppercase tracking-widest">Anomaly Threshold</span>
@@ -198,7 +230,9 @@ const ForecastForge: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-[10px] text-cyan-400 font-black uppercase tracking-widest">Secure Compute</div>
-                  <div className="text-[8px] text-cyan-900 font-bold uppercase tracking-widest mt-1">Air-gapped Bayesian node</div>
+                  <div className="text-[8px] text-cyan-900 font-bold uppercase tracking-widest mt-1">
+                    Air-gapped Bayesian node
+                  </div>
                 </div>
               </div>
               <button className="px-4 py-2 border border-cyan-500/20 rounded-lg text-[10px] font-black text-cyan-800 hover:text-cyan-400 hover:border-cyan-500 transition-all uppercase tracking-widest">

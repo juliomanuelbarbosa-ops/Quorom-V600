@@ -45,9 +45,9 @@ const SportsOracle = () => {
             total_stake: '$100.00',
             detected_at: 'Live',
             bets: [
-              { outcome: 'Cavaliers +5.5', bookmaker: 'Betfair', odds: 1.70, stake: '$59.52' },
-              { outcome: 'Timberwolves -5.5', bookmaker: 'William Hill', odds: 2.50, stake: '$40.48' }
-            ]
+              { outcome: 'Cavaliers +5.5', bookmaker: 'Betfair', odds: 1.7, stake: '$59.52' },
+              { outcome: 'Timberwolves -5.5', bookmaker: 'William Hill', odds: 2.5, stake: '$40.48' },
+            ],
           },
           {
             id: 'arb-2',
@@ -58,11 +58,11 @@ const SportsOracle = () => {
             total_stake: '$500.00',
             detected_at: '2m ago',
             bets: [
-              { outcome: 'Arsenal ML', bookmaker: 'DraftKings', odds: 2.10, stake: '$239.10' },
-              { outcome: 'Draw', bookmaker: 'FanDuel', odds: 3.40, stake: '$147.70' },
-              { outcome: 'Chelsea ML', bookmaker: 'BetMGM', odds: 4.30, stake: '$113.20' }
-            ]
-          }
+              { outcome: 'Arsenal ML', bookmaker: 'DraftKings', odds: 2.1, stake: '$239.10' },
+              { outcome: 'Draw', bookmaker: 'FanDuel', odds: 3.4, stake: '$147.70' },
+              { outcome: 'Chelsea ML', bookmaker: 'BetMGM', odds: 4.3, stake: '$113.20' },
+            ],
+          },
         ]);
 
         setMlData([
@@ -74,7 +74,7 @@ const SportsOracle = () => {
             implied_prob: '56.5%',
             book_odds: '-110 (52.4%)',
             ev: '+4.1%',
-            edge_color: 'text-emerald-500'
+            edge_color: 'text-emerald-500',
           },
           {
             id: 'ml-2',
@@ -84,8 +84,8 @@ const SportsOracle = () => {
             implied_prob: '54.0%',
             book_odds: '-110 (52.4%)',
             ev: '+1.6%',
-            edge_color: 'text-emerald-500'
-          }
+            edge_color: 'text-emerald-500',
+          },
         ]);
         setIsScanning(false);
       }, 1200);
@@ -114,14 +114,14 @@ const SportsOracle = () => {
 
       {/* Navigation */}
       <div className="flex gap-4 mb-6">
-        <button 
+        <button
           onClick={() => setActiveTab('arbitrage')}
           className={`px-4 py-2 rounded-xl font-mono text-sm transition-colors border flex items-center ${activeTab === 'arbitrage' ? 'bg-slate-800 border-yellow-400/50 text-yellow-400' : 'bg-slate-800/50 border-slate-800 text-slate-400 hover:text-slate-200'}`}
         >
           <DollarSign className="w-4 h-4 mr-2" />
           Arbitrage Finder
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('ml')}
           className={`px-4 py-2 rounded-xl font-mono text-sm transition-colors border flex items-center ${activeTab === 'ml' ? 'bg-slate-800 border-emerald-400/50 text-emerald-400' : 'bg-slate-800/50 border-slate-800 text-slate-400 hover:text-slate-200'}`}
         >
@@ -132,72 +132,88 @@ const SportsOracle = () => {
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
-        {activeTab === 'arbitrage' && arbData.map((arb) => (
-          <div 
-            key={arb.id} 
-            onClick={() => setSelectedItem(arb)}
-            className="bg-slate-800/50 p-4 rounded-xl border border-slate-800 relative overflow-hidden group cursor-pointer hover:bg-slate-800 transition-colors"
-          >
-            <div className="absolute top-0 right-0 p-2">
-              {arb.detected_at === 'Live' ? (
-                <span className="flex items-center text-xs font-mono text-red-500">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse mr-2"></span>
-                  LIVE
-                </span>
-              ) : (
-                <span className="text-xs font-mono text-slate-500">{arb.detected_at}</span>
-              )}
-            </div>
-            
-            <h3 className="text-white font-semibold mb-1">{arb.match}</h3>
-            <p className="text-sm font-mono text-slate-400 mb-4">{arb.sport} | GUARANTEED PROFIT: <span className="text-yellow-400">{arb.profit_percentage} ({arb.guaranteed_profit})</span></p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {arb.bets.map((bet, idx) => (
-                <div key={idx} className="bg-slate-900 p-3 rounded-lg border border-slate-800/80 flex justify-between items-center">
-                  <div>
-                    <span className="text-xs text-slate-500 block mb-1">{bet.bookmaker}</span>
-                    <span className="text-sm text-slate-200">{bet.outcome}</span>
-                  </div>
-                  <div className="text-right font-mono">
-                    <span className="text-teal-400 block">{bet.odds.toFixed(2)}</span>
-                    <span className="text-xs text-slate-400">Stake: {bet.stake}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+        {activeTab === 'arbitrage' &&
+          arbData.map((arb) => (
+            <div
+              key={arb.id}
+              onClick={() => setSelectedItem(arb)}
+              className="bg-slate-800/50 p-4 rounded-xl border border-slate-800 relative overflow-hidden group cursor-pointer hover:bg-slate-800 transition-colors"
+            >
+              <div className="absolute top-0 right-0 p-2">
+                {arb.detected_at === 'Live' ? (
+                  <span className="flex items-center text-xs font-mono text-red-500">
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse mr-2"></span>
+                    LIVE
+                  </span>
+                ) : (
+                  <span className="text-xs font-mono text-slate-500">{arb.detected_at}</span>
+                )}
+              </div>
 
-        {activeTab === 'ml' && mlData.map((ml) => (
-          <div 
-            key={ml.id} 
-            onClick={() => setSelectedItem(ml)}
-            className="bg-slate-800/50 p-4 rounded-xl border border-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-800 transition-colors"
-          >
-            <div>
-              <h3 className="text-white font-semibold mb-1">{ml.match}</h3>
-              <p className="text-sm font-mono text-slate-400 flex items-center gap-2">
-                Prediction: <span className="text-slate-200">{ml.model_prediction}</span>
-                <span className="text-slate-600">|</span>
-                Confidence: <span className="text-teal-400">{ml.confidence}</span>
+              <h3 className="text-white font-semibold mb-1">{arb.match}</h3>
+              <p className="text-sm font-mono text-slate-400 mb-4">
+                {arb.sport} | GUARANTEED PROFIT:{' '}
+                <span className="text-yellow-400">
+                  {arb.profit_percentage} ({arb.guaranteed_profit})
+                </span>
               </p>
-            </div>
-            <div className="text-right font-mono bg-slate-900 p-3 rounded-lg border border-slate-800">
-              <div className="text-xs text-slate-500 mb-1">EXPECTED VALUE</div>
-              <div className={`text-lg font-bold ${ml.edge_color} flex items-center justify-end gap-1`}>
-                <AlertTriangle className="w-4 h-4" />
-                {ml.ev}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {arb.bets.map((bet, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-slate-900 p-3 rounded-lg border border-slate-800/80 flex justify-between items-center"
+                  >
+                    <div>
+                      <span className="text-xs text-slate-500 block mb-1">{bet.bookmaker}</span>
+                      <span className="text-sm text-slate-200">{bet.outcome}</span>
+                    </div>
+                    <div className="text-right font-mono">
+                      <span className="text-teal-400 block">{bet.odds.toFixed(2)}</span>
+                      <span className="text-xs text-slate-400">Stake: {bet.stake}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+
+        {activeTab === 'ml' &&
+          mlData.map((ml) => (
+            <div
+              key={ml.id}
+              onClick={() => setSelectedItem(ml)}
+              className="bg-slate-800/50 p-4 rounded-xl border border-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-800 transition-colors"
+            >
+              <div>
+                <h3 className="text-white font-semibold mb-1">{ml.match}</h3>
+                <p className="text-sm font-mono text-slate-400 flex items-center gap-2">
+                  Prediction: <span className="text-slate-200">{ml.model_prediction}</span>
+                  <span className="text-slate-600">|</span>
+                  Confidence: <span className="text-teal-400">{ml.confidence}</span>
+                </p>
+              </div>
+              <div className="text-right font-mono bg-slate-900 p-3 rounded-lg border border-slate-800">
+                <div className="text-xs text-slate-500 mb-1">EXPECTED VALUE</div>
+                <div className={`text-lg font-bold ${ml.edge_color} flex items-center justify-end gap-1`}>
+                  <AlertTriangle className="w-4 h-4" />
+                  {ml.ev}
+                </div>
+              </div>
+            </div>
+          ))}
       </div>
 
       {/* Details Modal */}
       {selectedItem && (
-        <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedItem(null)}>
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-lg w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+        <div
+          className="absolute inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedItem(null)}
+        >
+          <div
+            className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-lg w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">{selectedItem.match}</h3>
@@ -226,7 +242,10 @@ const SportsOracle = () => {
                   <h4 className="text-sm font-bold text-slate-300 mb-3 uppercase tracking-wider">Betting Strategy</h4>
                   <div className="space-y-3">
                     {selectedItem.bets.map((bet, idx) => (
-                      <div key={idx} className="flex justify-between items-center bg-slate-950 p-3 rounded-lg border border-slate-800">
+                      <div
+                        key={idx}
+                        className="flex justify-between items-center bg-slate-950 p-3 rounded-lg border border-slate-800"
+                      >
                         <div>
                           <div className="text-teal-400 font-bold">{bet.bookmaker}</div>
                           <div className="text-sm text-slate-300">{bet.outcome}</div>
@@ -239,17 +258,18 @@ const SportsOracle = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl">
                   <p className="text-xs text-blue-300 leading-relaxed">
-                    <span className="font-bold">INSTRUCTION:</span> Place bets simultaneously to lock in profit. Ensure odds haven't changed before confirming.
+                    <span className="font-bold">INSTRUCTION:</span> Place bets simultaneously to lock in profit. Ensure
+                    odds haven&apos;t changed before confirming.
                   </p>
                 </div>
               </div>
             ) : (
               // ML Details
               <div className="space-y-6">
-                 <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
                     <div className="text-xs text-slate-500 mb-1">CONFIDENCE</div>
                     <div className="text-2xl font-bold text-teal-400">{selectedItem.confidence}</div>
@@ -261,23 +281,24 @@ const SportsOracle = () => {
                 </div>
 
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                   <div className="flex justify-between border-b border-slate-800 pb-2">
-                     <span className="text-slate-400">Model Prediction</span>
-                     <span className="text-white font-bold">{selectedItem.model_prediction}</span>
-                   </div>
-                   <div className="flex justify-between border-b border-slate-800 pb-2">
-                     <span className="text-slate-400">Implied Probability</span>
-                     <span className="text-white font-mono">{selectedItem.implied_prob}</span>
-                   </div>
-                   <div className="flex justify-between">
-                     <span className="text-slate-400">Book Odds</span>
-                     <span className="text-white font-mono">{selectedItem.book_odds}</span>
-                   </div>
+                  <div className="flex justify-between border-b border-slate-800 pb-2">
+                    <span className="text-slate-400">Model Prediction</span>
+                    <span className="text-white font-bold">{selectedItem.model_prediction}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-slate-800 pb-2">
+                    <span className="text-slate-400">Implied Probability</span>
+                    <span className="text-white font-mono">{selectedItem.implied_prob}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Book Odds</span>
+                    <span className="text-white font-mono">{selectedItem.book_odds}</span>
+                  </div>
                 </div>
 
                 <div className="bg-purple-500/10 border border-purple-500/20 p-4 rounded-xl">
                   <p className="text-xs text-purple-300 leading-relaxed">
-                    <span className="font-bold">ANALYSIS:</span> Model detects significant variance from bookmaker lines. Recommended Kelly Criterion stake: 2.5%.
+                    <span className="font-bold">ANALYSIS:</span> Model detects significant variance from bookmaker
+                    lines. Recommended Kelly Criterion stake: 2.5%.
                   </p>
                 </div>
               </div>
