@@ -68,7 +68,7 @@ const MarketOracle = () => {
       return (
         <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.5)] font-mono z-50">
           <p className="text-slate-400 text-xs mb-2 border-b border-slate-800 pb-1">{label} (T-Zero)</p>
-          {payload.map((entry, index) => (
+          {payload.map((entry: any, index: number) => (
             <div key={index} className="flex justify-between items-center gap-4 my-1 text-sm">
               <span style={{ color: entry.color }}>{entry.name}:</span>
               <span className="text-white font-bold">

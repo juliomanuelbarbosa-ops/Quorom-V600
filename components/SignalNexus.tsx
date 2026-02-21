@@ -61,7 +61,7 @@ const SignalNexus: React.FC = () => {
       setGpsStatus('PROXY_CONNECTION_ERROR');
       
       // Fallback mock data if the local backend isn't actually running
-      const fallback = [
+      const fallback: Hotspot[] = [
         { id: 101, ssid: 'QUORUM_SECURE_NODE', bssid: '00:11:22:33:44:55', signal: 92, security: 'WPA3', lat: lat + 0.001, lng: lng + 0.001, type: 'secure', source: 'MOCK_FALLBACK' },
         { id: 102, ssid: 'FREE_CITY_WIFI', bssid: 'AA:BB:CC:DD:EE:FF', signal: 45, security: 'None', lat: lat - 0.002, lng: lng + 0.001, type: 'open', source: 'MOCK_FALLBACK' },
         { id: 103, ssid: 'STARLINK_TRANSIT', bssid: '12:34:56:78:90:AB', signal: 78, security: 'WPA2', lat: lat + 0.002, lng: lng - 0.001, type: 'secure', source: 'MOCK_FALLBACK' },

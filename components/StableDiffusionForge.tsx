@@ -44,12 +44,17 @@ const StableDiffusionForge: React.FC = () => {
 
       // Search for the image part in the response
       let imageUrl = null;
-      for (const candidate of response.candidates) {
-        for (const part of candidate.content.parts) {
-          if (part.inlineData) {
-            imageUrl = `data:image/png;base64,${part.inlineData.data}`;
-            break;
+      if (response.candidates) {
+        for (const candidate of response.candidates) {
+          if (candidate.content && candidate.content.parts) {
+            for (const part of candidate.content.parts) {
+              if (part.inlineData) {
+                imageUrl = `data:image/png;base64,${part.inlineData.data}`;
+                break;
+              }
+            }
           }
+          if (imageUrl) break;
         }
       }
 

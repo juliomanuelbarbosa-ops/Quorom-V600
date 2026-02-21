@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import BabelProtocol from './BabelProtocol';
 import IntelFeed from './IntelFeed';
 import { IntelBrief } from './useQuorumStore';
@@ -10,21 +10,12 @@ import NeuralRadio from './NeuralRadio';
 import { Shield } from 'lucide-react';
 
 const QuorumDashboard: React.FC = () => {
-  // Global state for completed agent tasks
-  const [intelBriefs, setIntelBriefs] = useState<IntelBrief[]>([
-    {
-      id: 'intel-001',
-      timestamp: '10:42:05 AM',
-      type: 'MARKET ALERT',
-      content: 'Ethereum whale wallet 0x7a... moving 45,000 ETH to Binance. High probability of localized dump.',
-      severity: 'high'
-    }
-  ]);
+  const { intelBriefs, addIntelBrief } = useQuorumStore();
 
   // Handler passed to BabelProtocol to inject new intel
   const handleNewIntel = useCallback((newBrief: IntelBrief) => {
-    setIntelBriefs((prevBriefs) => [newBrief, ...prevBriefs]);
-  }, []);
+    addIntelBrief(newBrief);
+  }, [addIntelBrief]);
 
   return (
     <div className="bg-slate-950 h-full font-mono text-slate-200 flex flex-col overflow-hidden">

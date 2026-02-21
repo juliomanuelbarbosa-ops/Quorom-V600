@@ -41,7 +41,7 @@ const VisualCortex = () => {
       return (
         <div className="bg-slate-900 border border-slate-700 p-3 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.8)] font-mono z-50">
           <p className="text-slate-400 text-xs mb-2 border-b border-slate-800 pb-1">{label || 'SECTOR VECTOR'}</p>
-          {payload.map((entry, index) => (
+          {payload.map((entry: any, index: number) => (
             <div key={index} className="flex justify-between items-center gap-4 my-1 text-sm">
               <span style={{ color: entry.color }} className="uppercase text-xs">{entry.name}:</span>
               <span className="text-white font-bold">{entry.value}{entry.name === 'tvl' ? 'M' : ''}</span>

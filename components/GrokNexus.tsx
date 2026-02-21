@@ -52,11 +52,8 @@ const NavOrb: React.FC<OrbProps> = ({ position, color, label, onClick }) => {
   );
 };
 
-interface GrokNexusProps {
-  onNavigate: (id: string) => void;
-}
-
-const GrokNexus: React.FC<GrokNexusProps> = ({ onNavigate }) => {
+const GrokNexus: React.FC = () => {
+  const { setActiveView: onNavigate } = useQuorumStore();
   return (
     <div className="h-full relative overflow-hidden bg-slate-950 rounded-2xl">
       <div className="absolute top-8 left-8 z-10 space-y-2 pointer-events-none">
